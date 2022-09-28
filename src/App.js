@@ -1,12 +1,23 @@
 import "./assets/styles/global.css";
 import "./assets/styles/reset.css";
+import { BrowserRouter, Routes, Route} from "react-router-dom";
 
 import Home from "./pages/Home";
+import RestaurantRegister from "./pages/RestaurantRegister"
+import ClientRegister from "./pages/ClientRegister"
+import ClientLogin from "./pages/ClientLogin";
 
 function App() {
   return (
     <>
-      <Home />
+      <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/restaurants/register" element={<RestaurantRegister />} />
+            <Route path="/clients/register" element={<ClientRegister />} />
+            <Route path="/clients/login" element={<ClientLogin />} />
+          </Routes>
+      </BrowserRouter>
     </>
   );
 }
