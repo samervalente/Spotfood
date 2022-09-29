@@ -8,10 +8,11 @@ export default function Input({placeholder}){
 
 
 const InputComponent = styled.input`
-
-border:2px solid orange;
+border-radius: 5px;
+border: 2px solid red;
+margin:10px 0px;
 height: 40px;
-width: 120%;
+width: 80%;
 background-color: white;
 
 

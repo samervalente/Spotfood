@@ -10,17 +10,18 @@ export default function ClientRegister(){
             <Body>
                <div className="container">
                     <div className="header">
-                        <img src={logo}/>
+                        <img src={logo} alt="logoimg"/>
                      
                     </div>
                     <div className="forms">
-                    <img src={pana} />
+                    <img src={pana} alt="panaimg" />
                         <form>
                             <Input placeholder={"Nome"} />
                             <Input placeholder={"CPF"} />
                             <Input placeholder={"Email"} />
                             <Input placeholder={"Password"} />
                             <Button content={"Registrar-se"} />
+                            <h2>Já possui uma conta? Faça <strong>Login</strong></h2>
                         </form>
                        
                     </div>
@@ -39,6 +40,7 @@ height: 100vh;
 display: flex;
 align-items: center;
 justify-content: center;
+font-family: 'Roboto';
 
 .container{
     width: 70%;
@@ -67,10 +69,8 @@ input{
 }
 
 
-form{
-    display: flex;
-    flex-direction: column;
-   
+h2{
+    margin-top:10px;
 }
 
 `

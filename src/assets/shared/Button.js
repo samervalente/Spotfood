@@ -1,19 +1,19 @@
 import styled from "styled-components";
 
-export default function Button({ content, callback }) {
-  return <ButtonComponent onClick={callback}>{content}</ButtonComponent>;
+export default function Button({ content, callback, width }) {
+  return <ButtonComponent widht={width} onClick={callback}>{content}</ButtonComponent>;
 }
 
 const ButtonComponent = styled.button`
-  background-color: orange;
+  background-color: red;
+  color:white;
   border: none;
   border-radius: 5px;
   margin-top: 10px;
-  color: brown;
-  width: 50%;
+  width: ${props => props.width};
 
-  height: 50px;
-  font-size: 22px;
+  height: 30px;
+  font-size: 16px;
   transition: all linear 0.5s;
 
   :hover {
