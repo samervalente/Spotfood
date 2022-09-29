@@ -1,11 +1,36 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { registerClient } from "../api/clientAPI";
 import pana from "../assets/images/pana.png"
 import logo from "../assets/images/logo.png"
 import Button from "../assets/shared/Button";
 import Input from "../assets/shared/Input";
 
 export default function ClientRegister(){
+    const [clientData, setClientData] = useState({
+        name:"",
+        cpf:"",
+        email:"",
+        imageProfile:"",
+        password:""
+
+        })
+    const [confirmPassword, setConfirmPassword] = useState("")
+    const navigate = useNavigate()
+
+    async function handlerSubmit(e){
+        console.log(clientData)
+        e.preventDefault()
+        if(clientData.password !== confirmPassword){
+           return alert("As senhas devem ser iguais.")
+        }
+        await registerClient(clientData).then(() => {
+            navigate("/")
+        })
+
+    }
+
     return (
         <>
             <Body>
@@ -16,11 +41,24 @@ export default function ClientRegister(){
                     </div>
                     <div className="forms">
                     <img src={pana} alt="panaimg" />
-                        <form>
-                            <Input placeholder={"Nome"} />
-                            <Input placeholder={"CPF"} />
-                            <Input placeholder={"Email"} />
-                            <Input placeholder={"Password"} />
+                        <form onSubmit={handlerSubmit}>
+                            <Input placeholder={"Nome"} 
+                            onChange={(e) => setClientData({...clientData, name:e.target.value})} />
+                            
+                            <Input placeholder={"CPF"}
+                            onChange={(e) => setClientData({...clientData, cpf:e.target.value})} />
+
+                            <Input placeholder={"Email"}
+                             onChange={(e) => setClientData({...clientData, email:e.target.value})} />
+
+                            <Input placeholder={"URL da imagem de perfil"}
+                             onChange={(e) => setClientData({...clientData, imageProfile:e.target.value})} />
+
+                            <Input placeholder={"Senha"}
+                             onChange={(e) => setClientData({...clientData, password:e.target.value})} />
+
+                            <Input placeholder={"Confirme a senha"}
+                             onChange={(e) => setConfirmPassword(e.target.value)} />
                             <Button width={'80%'} type={"submit"} content={"Registrar-se"} />
                             <h2>Já possui uma conta? Faça <strong>
                                 <Link to="/">
