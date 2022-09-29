@@ -1,4 +1,11 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 
-*{
-    box-sizing: border-box;
+:root {
+  --select-border: #777;
+  --select-focus: blue;
+  --select-arrow: var(--select-border);
 }
