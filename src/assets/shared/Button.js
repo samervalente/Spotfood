@@ -1,7 +1,9 @@
 import styled from "styled-components";
 
-export default function Button({ content, callback, width }) {
-  return <ButtonComponent widht={width} onClick={callback}>{content}</ButtonComponent>;
+export default function Button({ content, callback, width, type }) {
+  return (
+    <ButtonComponent width={width} type={type} onClick={callback}>{content}</ButtonComponent>
+  )
 }
 
 const ButtonComponent = styled.button`

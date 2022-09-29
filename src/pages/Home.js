@@ -15,7 +15,7 @@ export default function Home(){
             <h2>Entre agora na sua conta <strong>Spotfood</strong></h2>
             <Input placeholder={"Email"} />
             <Input placeholder={"Senha"} />
-            <Button content="Entrar" />
+            <Button width={"80%"} content="Entrar" />
 
             <Link to="/register">
                 <h2>Não possui uma conta? <strong>Cadastre-se</strong></h2>
@@ -54,11 +54,12 @@ font-family: 'Roboto';
 
 display: flex;
 flex-direction: column;
+justify-content: center;
 padding-left:20px;
 padding-top: 20px;
 
 .logo{
-    width: 180px;
+    width: 200px;
 }
 
 h2{

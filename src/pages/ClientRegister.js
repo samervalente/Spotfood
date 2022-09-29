@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import pana from "../assets/images/pana.png"
 import logo from "../assets/images/logo.png"
 import Button from "../assets/shared/Button";
@@ -20,8 +21,11 @@ export default function ClientRegister(){
                             <Input placeholder={"CPF"} />
                             <Input placeholder={"Email"} />
                             <Input placeholder={"Password"} />
-                            <Button content={"Registrar-se"} />
-                            <h2>Já possui uma conta? Faça <strong>Login</strong></h2>
+                            <Button width={'80%'} type={"submit"} content={"Registrar-se"} />
+                            <h2>Já possui uma conta? Faça <strong>
+                                <Link to="/">
+                                    Login
+                                </Link></strong></h2>
                         </form>
                        
                     </div>
@@ -71,6 +75,14 @@ input{
 
 h2{
     margin-top:10px;
+}
+
+a{
+    text-decoration: none;
+}
+
+a:visited{
+    color:red;
 }
 
 `
