@@ -39,12 +39,3 @@ export async function filterRestaurants(state, city, config) {
   }
 }
 
-export async function addProductToCart(restaurantId, amount) {
-  try {
-    await axios.post(`${baseURL}/restaurants/${restaurantId}`, amount);
-  } catch (error) {
-    alert(
-      "Não foi possível adicionar este produto ao carrinho. Por favor, tente novamente."
-    );
-  }
-}

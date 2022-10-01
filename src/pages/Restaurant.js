@@ -2,41 +2,52 @@ import styled from "styled-components";
 import { useNavigate, useParams } from "react-router-dom";
 import LeftBar from "../components/LeftBar";
 import { useEffect, useState } from "react";
-import { getRestaurantById, addProductToCart } from "../api/restaurantAPI";
+import { getRestaurantById } from "../api/restaurantAPI";
+import { addProductToCart } from "../api/productsAPI";
 import Button from "../assets/shared/Button";
 
 export default function Restaurant() {
   const { restaurantId } = useParams();
   const [restaurant, setRestaurant] = useState({});
-  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [fetchDependency, setFechDependency] = useState(false)
+ 
 
   const navigate = useNavigate();
   const client = JSON.parse(localStorage.getItem("client"));
+  const config = {
+    headers: {
+      authorization: `Bearer ${client.token}`,
+    },
+  };
 
   useEffect(() => {
-    const config = {
-      headers: {
-        authorization: `Bearer ${client.token}`,
-      },
-    };
-
     async function fetchData() {
       const response = await getRestaurantById(restaurantId, config);
       setRestaurant(response);
-      setProducts(response.products);
+      setCategories(response.productsCategorie);
     }
 
     fetchData();
-  }, []);
+  }, [fetchDependency]);
+
+
+ console.log(categories)
+
+  async function addProductsToCart(productId) {
+    const body = {amount:1}
+
+    await addProductToCart(productId, body, config)
+    setFechDependency(!fetchDependency)
+  }
 
   async function purchase(productId) {
     navigate(`/order/${productId}`);
   }
 
   function renderProducts() {
-    console.log(products);
-    if (products && products.length > 0) {
-      return products.map((category) => {
+    if (categories && categories.length > 0) {
+      return categories.map((category) => {
         return (
           <div className="categorieContainer">
             <h2 className="categoryName">{category.category}</h2>
@@ -50,8 +61,17 @@ export default function Restaurant() {
                       R$ {product.price.toFixed(2).replace(".", ",")}
                     </span>
                     <span>{product.description}</span>
-                    <Button width={"90%"} content={"Adicionar ao carrinho"} />
+                    {!product.inCart ? <Button
+                      onClick={() => addProductsToCart(product.productId)}
+                      width={"90%"}
+                      content={"Adicionar ao carrinho"}
+                    />: <Button
+                    
+                    width={"90%"}
+                    content={"Remover do carrinho"}
+                  />}
                     <Button
+                      className="removeFromCart"
                       width={"90%"}
                       onClick={() => purchase(product.productId)}
                       content={"Comprar"}
@@ -63,9 +83,7 @@ export default function Restaurant() {
           </div>
         );
       });
-    } else {
-      return "Estamos abastecendo a loja ainda. Fique atento ;)";
-    }
+    } 
   }
 
   return (
@@ -124,7 +142,7 @@ const MainContent = styled.div`
     filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#F12323", endColorstr="#E90707", GradientType=1 );
 
     color: white;
-    padding: 20px;
+    padding: 30px 60px;
 
     height: 300px;
     display: flex;
@@ -140,7 +158,6 @@ const MainContent = styled.div`
       height: 200px;
       width: 200px;
       box-shadow: 2px 3px 20px 5px black;
-      border-radius: 50%;
     }
   }
 
@@ -193,5 +210,10 @@ const MainContent = styled.div`
         border-radius: 5px;
       }
     }
+    .removeFromCart{
+    background-color: green;
   }
+  }
+
+ 
 `;

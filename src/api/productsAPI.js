@@ -8,19 +8,25 @@ export async function getProductById(productId, config) {
       `${baseURL}/products/${productId}`,
       config
     );
- 
+
     return data;
   } catch (error) {
     alert("Não foi possível carregar o produto");
   }
 }
 
-
-export async function registerPurchase(products, config){
+export async function addProductToCart(productId, amount, config) {
   try {
-    await axios.post(`${baseURL}/products/purchase`, products, config)
-
+    await axios.post(`${baseURL}/products/${productId}/cart`, amount, config);
   } catch (error) {
-    alert("Não foi possível realizar a compra. Por favor, tente novamente.")
+    alert("Não foi possível adicionar este produto ao carrinho. Tente novamente");
+  }
+}
+
+export async function registerPurchase(products, config) {
+  try {
+    await axios.post(`${baseURL}/products/purchase`, products, config);
+  } catch (error) {
+    alert("Não foi possível realizar a compra. Por favor, tente novamente.");
   }
 }

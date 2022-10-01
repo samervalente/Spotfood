@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import SearchBar from "../assets/shared/SearchBar";
-import pana from "../assets/images/pana.png"
+import pana from "../assets/images/pana.png";
 
 export default function Header() {
   return (
@@ -68,16 +68,16 @@ const HeaderComponent = styled.div`
 const UserProfile = styled.div`
   display: flex;
   align-items: center;
-  color:white;
-  font-family: 'Roboto';
+  color: white;
+  font-family: "Roboto";
 
-  p{
+  p {
     margin-right: 10px;
   }
-  img{
+  img {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    border:2px solid white;
+    border: 2px solid white;
   }
 `;
