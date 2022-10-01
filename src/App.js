@@ -7,7 +7,9 @@ import Home from "./pages/Home";
 import HomeLogged from "./pages/HomeLogged";
 import ClientContext from "./contexts/clientContext";
 import Cart from "./pages/Cart";
+import Order from "./pages/Order";
 import Orders from "./pages/Orders";
+import Restaurant from "./pages/Restaurant";
 import ClientRegister from "./pages/ClientRegister";
 
 function App() {
@@ -27,6 +29,8 @@ function App() {
             <Route path="/home" element={<HomeLogged />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/orders" element={<Orders />} />
+            <Route path="/order/:id" element={<Order />} />
+            <Route path="/restaurant/:restaurantId" element={<Restaurant />} />
             <Route path="/register" element={<ClientRegister />} />
           </Routes>
         </BrowserRouter>

@@ -7,10 +7,16 @@ export default function Input({ placeholder, type, onChange }) {
 }
 
 const InputComponent = styled.input`
-  border-radius: 5px;
-  border: 2px solid red;
+  border-radius: 8px;
+  border: 2px solid white;
   margin: 10px 0px;
-  height: 40px;
+  height: 35px;
   width: 80%;
-  background-color: white;
+  background-color: red;
+  color: white;
+  padding: 10px;
+
+  ::placeholder {
+    color: white;
+  }
 `;

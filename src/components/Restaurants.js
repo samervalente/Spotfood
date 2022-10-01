@@ -1,17 +1,23 @@
 import styled from "styled-components";
-import { useState, useContext, useEffect } from "react";
-import ClientContext from "../contexts/clientContext";
-import { getAllRestaurants } from "../api/restaurantAPI";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { getAllRestaurants, filterRestaurants } from "../api/restaurantAPI";
 import Button from "../assets/shared/Button";
 import { getStates, getCity } from "../api/locationsAPI";
 
 export default function Restaurants() {
   const [restaurants, setRestaurants] = useState([]);
-  const { client } = useContext(ClientContext);
+
   const [uf, setUf] = useState("AC");
-  const [city, setCity] = useState("");
   const [statesList, setStatesList] = useState([]);
   const [cityList, setCityList] = useState([]);
+  const [location, setLocation] = useState({
+    state: "",
+    city: "",
+  });
+  const navigate = useNavigate();
+
+  const client = JSON.parse(localStorage.getItem("client"));
 
   const config = {
     headers: {
@@ -47,15 +53,28 @@ export default function Restaurants() {
 
   useEffect(() => {});
 
+  function exploreRestaurant(restaurantId) {
+    navigate(`/restaurant/${restaurantId}`);
+  }
+
+  async function filterRestaurants() {
+    console.log(location);
+    const response = await filterRestaurants(config);
+    setRestaurants(response);
+  }
+
   function renderRestaurants() {
     return restaurants.map((restaurant) => {
       return (
-        <div className="restaurantContainer">
+        <div
+          className="restaurantContainer"
+          onClick={() => exploreRestaurant(restaurant.id)}
+        >
           <img className="restaurantImage" src={restaurant.imageProfile} />
           <p className="restaurantName">{restaurant.name}</p>
           <div className="location">
             <span className="city">{restaurant.city} -</span>
-            <span className="state">{restaurant.states.name}</span>
+            <span className="state">{restaurant.state}</span>
             <Button width="100%" content="Explorar restaurante" />
           </div>
         </div>
@@ -66,12 +85,15 @@ export default function Restaurants() {
   return (
     <>
       <Container>
+        <h2>Encontre o restaurante mais pertinho de você!</h2>
         <div className="filter">
           <div className="select">
             <select
               value={uf}
               onChange={(e) => {
                 setUf(e.target.value);
+                const state = e.target.value.split("-")[1];
+                setLocation({ ...location, state });
               }}
             >
               {statesList.map((state) => {
@@ -87,7 +109,9 @@ export default function Restaurants() {
             {cityList.length > 0 ? (
               <select
                 className="selectCity"
-                onChange={(e) => setCity(e.target.value)}
+                onChange={(e) => {
+                  setLocation({ ...location, city: e.target.value });
+                }}
               >
                 {cityList.map((city) => {
                   return <option>{city.nome}</option>;
@@ -97,7 +121,11 @@ export default function Restaurants() {
               ""
             )}
           </div>
-          <Button width={"10%"} content={"Filtrar"} />
+          <Button
+            onClick={() => filterRestaurants()}
+            width={"10%"}
+            content={"Filtrar"}
+          />
         </div>
         <h3 className="title">
           Os melhores restaurantes do Brasil estão aqui na{" "}
@@ -112,7 +140,7 @@ export default function Restaurants() {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
+  margin-left: 280px;
   height: 100vh;
   padding: 50px;
   gap: 50px;
@@ -125,8 +153,9 @@ const Container = styled.div`
 
   .restaurants {
     display: flex;
+
     flex-wrap: wrap;
-    gap: 50px;
+    gap: 70px;
   }
 
   .title {
@@ -171,9 +200,7 @@ const Container = styled.div`
   }
 
   select {
-    // A reset of styles, including removing the default dropdown arrow
     appearance: none;
-    // Additional resets for further consistency
     background-color: transparent;
     border: none;
     padding: 0 1em 0 0;

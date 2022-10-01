@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
-export default function Button({ content, callback, width, type }) {
+export default function Button({ content, onClick, width, type }) {
   return (
-    <ButtonComponent width={width} type={type} onClick={callback}>{content}</ButtonComponent>
+    <ButtonComponent width={width}type={type} onClick={onClick}>{content}</ButtonComponent>
   )
 }
 

@@ -47,7 +47,6 @@ const LeftBarComponent = styled.div`
   box-shadow: 2px 2px 3px gray;
   position: fixed;
   left: 0;
-
   display: flex;
   flex-direction: column;
   padding-left: 20px;
