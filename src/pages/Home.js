@@ -7,7 +7,6 @@ import logo from "../assets/images/logo.png";
 import Button from "../assets/shared/Button";
 import Input from "../assets/shared/Input";
 import ClientContext from "../contexts/clientContext";
-import { checkToken } from "../utils/tokenValidation";
 
 export default function Home() {
   const [clientData, setClientData] = useState({
@@ -15,16 +14,13 @@ export default function Home() {
     password: "",
   });
   const navigate = useNavigate();
-  const { client, setClient } = useContext(ClientContext);
-  // useEffect(() => {
-  //   checkToken(navigate, client, setClient);
-  // }, []);
+  const { setClient } = useContext(ClientContext);
 
   async function handlerSubmit(e) {
     e.preventDefault();
 
     const client = await loginClient(clientData);
-    
+
     if (client.token) {
       setClient({ ...client });
       const clientSerialized = JSON.stringify(client);

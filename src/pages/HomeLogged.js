@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import LeftBar from "../components/LeftBar";
-import Header from "../components/Header";
 import Restaurants from "../components/Restaurants";
 
 export default function HomeLogged() {
@@ -9,9 +8,7 @@ export default function HomeLogged() {
     <>
       <Container>
         <LeftBar />
-  
           <Restaurants />
-       
       </Container>
     </>
   );

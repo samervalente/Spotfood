@@ -29,16 +29,11 @@ export async function loginClient(clientData) {
   }
 }
 
-export async function validateToken(body, config) {
+export async function getClientCart(config) {
   try {
-    const { status } = await axios.post(
-      `${baseURL}/auth/validate`,
-      body,
-      config
-    );
-    return status;
+    const { data } = await axios.get(`${baseURL}/clients/carts`, config);
+    return data;
   } catch (error) {
-    console.log(error);
-    return error.response.data;
+    alert("Não foi possível carregar o carrinho");
   }
 }

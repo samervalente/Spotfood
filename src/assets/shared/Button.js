@@ -11,7 +11,6 @@ const ButtonComponent = styled.button`
   color:white;
   border: none;
   border-radius: 5px;
-  margin-top: 10px;
   width: ${props => props.width};
 
   height: 30px;

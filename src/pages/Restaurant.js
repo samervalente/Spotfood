@@ -3,15 +3,19 @@ import { useNavigate, useParams } from "react-router-dom";
 import LeftBar from "../components/LeftBar";
 import { useEffect, useState } from "react";
 import { getRestaurantById } from "../api/restaurantAPI";
-import { addProductToCart } from "../api/productsAPI";
+import { addProductToCart, removeProductsFromCart } from "../api/productsAPI";
 import Button from "../assets/shared/Button";
+import Modal from "react-modal";
+
+Modal.setAppElement("#root");
 
 export default function Restaurant() {
   const { restaurantId } = useParams();
   const [restaurant, setRestaurant] = useState({});
   const [categories, setCategories] = useState([]);
-  const [fetchDependency, setFechDependency] = useState(false)
- 
+  const [fetchDependency, setFechDependency] = useState(false);
+  const [amount, setAmount] = useState(1);
+  const [modalIsOpen, setIsOpen] = useState(false);
 
   const navigate = useNavigate();
   const client = JSON.parse(localStorage.getItem("client"));
@@ -31,18 +35,36 @@ export default function Restaurant() {
     fetchData();
   }, [fetchDependency]);
 
-
- console.log(categories)
-
   async function addProductsToCart(productId) {
-    const body = {amount:1}
+    const body = { amount };
 
-    await addProductToCart(productId, body, config)
-    setFechDependency(!fetchDependency)
+    await addProductToCart(productId, body, config);
+    setFechDependency(!fetchDependency);
+  }
+
+  async function removeProductFromCart(productId) {
+    
+    await removeProductsFromCart(productId, config);
+    setFechDependency(!fetchDependency);
   }
 
   async function purchase(productId) {
     navigate(`/order/${productId}`);
+  }
+
+  function openModal() {
+    setAmount(1);
+    setIsOpen(true);
+  }
+
+  function closeModal() {
+    setAmount("");
+    setIsOpen(false);
+  }
+  let subtitle;
+
+  function afterOpenModal() {
+    subtitle.style.color = "#f00";
   }
 
   function renderProducts() {
@@ -50,6 +72,7 @@ export default function Restaurant() {
       return categories.map((category) => {
         return (
           <div className="categorieContainer">
+            <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Hello</h2>
             <h2 className="categoryName">{category.category}</h2>
             <div className="productsContainer">
               {category.products.map((product) => {
@@ -61,21 +84,54 @@ export default function Restaurant() {
                       R$ {product.price.toFixed(2).replace(".", ",")}
                     </span>
                     <span>{product.description}</span>
-                    {!product.inCart ? <Button
-                      onClick={() => addProductsToCart(product.productId)}
-                      width={"90%"}
-                      content={"Adicionar ao carrinho"}
-                    />: <Button
-                    
-                    width={"90%"}
-                    content={"Remover do carrinho"}
-                  />}
                     <Button
                       className="removeFromCart"
                       width={"90%"}
                       onClick={() => purchase(product.productId)}
                       content={"Comprar"}
                     />
+
+                    {!product.inCart ? (
+                      <div className="addQuant">
+                        <Button
+                          onClick={openModal}
+                          width={"90%"}
+                          content={"Adicionar ao carrinho"}
+                        />
+                        <Modal
+                          isOpen={modalIsOpen}
+                          onAfterOpen={afterOpenModal}
+                          onRequestClose={closeModal}
+                          style={customStyles}
+                        >
+                          <div className="addSpan">
+                            <p>Selecione a quantidade</p>
+                            <input
+                              onChange={(e) => setAmount(e.target.value)}
+                              type="number"
+                              min={1}
+                              defaultValue={1}
+                              className="addInput"
+                            />
+                            <span> Valor total:R${amount * product.price}</span>
+                          </div>
+                          <Button
+                            onClick={() => {
+                              addProductsToCart(product.productId);
+                              setIsOpen(false);
+                            }}
+                            width={"50%"}
+                            content={"Adicionar ao carrinho"}
+                          />
+                        </Modal>
+                      </div>
+                    ) : (
+                      <Button
+                        onClick={() => removeProductFromCart(product.productId)}
+                        width={"90%"}
+                        content={"Remover do carrinho"}
+                      />
+                    )}
                   </div>
                 );
               })}
@@ -83,7 +139,7 @@ export default function Restaurant() {
           </div>
         );
       });
-    } 
+    }
   }
 
   return (
@@ -107,6 +163,26 @@ export default function Restaurant() {
     </>
   );
 }
+
+const customStyles = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+    width: "400px",
+    heigth: "100px",
+  },
+  overlay: {
+    backgroundColor: "white",
+
+    position: "fixed",
+    heigth: "10px",
+    scroll: "none",
+  },
+};
 
 const Container = styled.div`
   margin-left: 280px;
@@ -160,7 +236,6 @@ const MainContent = styled.div`
       box-shadow: 2px 3px 20px 5px black;
     }
   }
-
   .products {
     background-color: white;
 
@@ -191,14 +266,42 @@ const MainContent = styled.div`
         .productInfos {
           display: flex;
           flex-direction: column;
+          gap: 10px;
           align-items: center;
           border-radius: 2px;
           height: 300px;
-          width: 200px;
+          width: 230px;
           box-shadow: 2px 2px 2px 3px lightgray;
 
           .price {
             margin-top: 10px;
+            color: red;
+            font-weight: bold;
+          }
+        }
+
+        .addQuant {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 10px;
+
+          .addSpan {
+            display: flex;
+          }
+
+          span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            justify-content: center;
+          }
+
+          input {
+            width: 20%;
+            height: 20px;
+            display: flex;
+            text-align: center;
             color: red;
             font-weight: bold;
           }
@@ -210,10 +313,5 @@ const MainContent = styled.div`
         border-radius: 5px;
       }
     }
-    .removeFromCart{
-    background-color: green;
   }
-  }
-
- 
 `;

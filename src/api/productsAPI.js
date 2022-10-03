@@ -19,7 +19,18 @@ export async function addProductToCart(productId, amount, config) {
   try {
     await axios.post(`${baseURL}/products/${productId}/cart`, amount, config);
   } catch (error) {
-    alert("Não foi possível adicionar este produto ao carrinho. Tente novamente");
+    alert(
+      "Não foi possível adicionar este produto ao carrinho. Tente novamente"
+    );
+  }
+}
+
+export async function removeProductsFromCart(productId, config) {
+  try {
+    const response = await axios.delete(`${baseURL}/products/${productId}/cart`, config);
+    console.log(response)
+  } catch (error) {
+    alert("Não foi possível remover este produto do carrinho. Tente novamente");
   }
 }
 
