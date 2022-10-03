@@ -2,26 +2,18 @@ import styled from "styled-components";
 import LeftBar from "../components/LeftBar";
 import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getProductById, registerPurchase } from "../api/productsAPI";
+import { getClientCart } from "../api/clientAPI";
+import { removeProductsFromCart, registerPurchase } from "../api/productsAPI";
 import Button from "../assets/shared/Button";
 import Input from "../assets/shared/Input";
 
 export default function Order() {
-  const { id } = useParams();
+  const { cartId } = useParams();
   const client = JSON.parse(localStorage.getItem("client"));
-  const [product, setProduct] = useState({});
-  const [amount, setAmount] = useState(1);
+  const [cartInfos, setCartInfos] = useState({});
+  const [cartProducts, setCartProducts] = useState([]);
   const [isOrderFinished, setIsOrderFinished] = useState(false);
-
-  const order = {
-    products: [
-      {
-        productId: id,
-        amount,
-      },
-    ],
-    totalValue: product.price * amount,
-  };
+  const [fetchDependency, setFechDependency] = useState(false);
 
   const config = {
     headers: {
@@ -31,25 +23,29 @@ export default function Order() {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await getProductById(id, config);
-      setProduct(response);
+      const response = await getClientCart(config);
+      setCartInfos(response);
+      setCartProducts(response.cartProducts);
     }
     fetchData();
-  }, []);
+  }, [fetchDependency]);
 
-  function addAmount(action) {
-    if (action === "add") {
-      setAmount(amount + 1);
-    } else if (action === "minus" && amount !== 1) {
-      setAmount(amount - 1);
-    }
+  async function removeProductFromCart(productId) {
+    await removeProductsFromCart(productId, config);
+    setFechDependency(!fetchDependency);
   }
 
   async function handlerPurchase(e) {
     e.preventDefault();
-    console.log(order);
-    await registerPurchase(order, config);
-    setIsOrderFinished(true);
+    const products = cartProducts.map((product) => ({
+      productId: product.productId,
+      amount: product.amount,
+    }));
+    const body = { products, totalValue: cartInfos.totalPrice };
+    const { status } = await registerPurchase(body, config);
+    if (status === 200) {
+      setIsOrderFinished(true);
+    }
   }
 
   return (
@@ -57,49 +53,41 @@ export default function Order() {
       <Container>
         <LeftBar />
         <MainContent>
-          {product.price ? (
+          {cartProducts && cartProducts.length > 0 ? (
             <div className="orderContainer">
               {!isOrderFinished ? (
                 <>
                   <div className="orderInfos">
                     <h2>Informações da compra</h2>
-                    <div className="productInfos">
-                      <img src={product.imageUrl} />
-                      <p>Produto: {product.name}</p>
-                      <p className="price">
-                        Preço unitário: R${" "}
-                        {product.price.toFixed(2).replace(".", ",")}
-                      </p>
-                      <div className="addAmount">
-                        <span>Quantidade: {amount}</span>
-                        <button
-                          onClick={() => addAmount("add")}
-                          className="amount"
-                        >
-                          +
-                        </button>
-                        <button
-                          onClick={() => addAmount("minus")}
-                          className="amount"
-                        >
-                          -
-                        </button>
-                      </div>
-                      <h3>
-                        Total:{" "}
-                        <span className="total">
-                          R${" "}
-                          {(amount * product.price)
-                            .toFixed(2)
-                            .replace(".", ",")}
-                        </span>
-                      </h3>
+                    <div className="productsContainer">
+                      {cartProducts.map((product) => {
+                        return (
+                          <div className="productInfos">
+                            <img src={product.imageUrl} />
+                            <p>Produto: {product.name} </p>
+                            <p className="price">
+                              Preço unitário: R$ {product.price}
+                            </p>
+                            <Button
+                              onClick={() =>
+                                removeProductFromCart(product.productId)
+                              }
+                              content={"Remover"}
+                            />
+                          </div>
+                        );
+                      })}
                     </div>
+                    <h3>
+                      Total:{" "}
+                      <span className="total">R${cartInfos.totalPrice}</span>
+                    </h3>
                   </div>
+
                   <div className="adress">
                     <h2>Informações de entrega</h2>
                     <form onSubmit={handlerPurchase}>
-                      <Input type="text" placeholder={"CEP"} required />
+                      <Input placeholder={"CEP"} required />
                       <Input placeholder={"Número"} required />
                       <Input placeholder={"Complemento"} required />
                       <Input placeholder={"Enviar observação (opcional)"} />
@@ -180,23 +168,34 @@ const MainContent = styled.div`
     .orderInfos {
       border-right: 2px solid lightgray;
       padding-right: 10px;
-    }
 
-    .productInfos {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 10px;
-      border-radius: 2px;
-      height: 300px;
-      width: 250px;
+      .productsContainer {
+        overflow-y: scroll;
+        height: 250px;
 
-      .price {
-      }
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
 
-      img {
-        height: 100px;
-        border-radius: 5px;
+        .productInfos {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 10px;
+          border-radius: 2px;
+          height: 300px;
+          width: 90%;
+          border-bottom: 1px solid lightgray;
+
+          padding-bottom: 10px;
+          .price {
+          }
+
+          img {
+            height: 100px;
+            border-radius: 5px;
+          }
+        }
       }
     }
 
@@ -218,7 +217,9 @@ const MainContent = styled.div`
       }
     }
   }
+
   .adress {
+    width: 50%;
     button {
       background-color: green;
     }

@@ -27,8 +27,11 @@ export async function addProductToCart(productId, amount, config) {
 
 export async function removeProductsFromCart(productId, config) {
   try {
-    const response = await axios.delete(`${baseURL}/products/${productId}/cart`, config);
-    console.log(response)
+    const response = await axios.delete(
+      `${baseURL}/products/${productId}/cart`,
+      config
+    );
+    
   } catch (error) {
     alert("Não foi possível remover este produto do carrinho. Tente novamente");
   }
@@ -36,7 +39,9 @@ export async function removeProductsFromCart(productId, config) {
 
 export async function registerPurchase(products, config) {
   try {
-    await axios.post(`${baseURL}/products/purchase`, products, config);
+    const response = await axios.post(`${baseURL}/products/purchase`, products, config);
+    return response
+    
   } catch (error) {
     alert("Não foi possível realizar a compra. Por favor, tente novamente.");
   }

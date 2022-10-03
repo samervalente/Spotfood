@@ -16,6 +16,10 @@ export default function Restaurant() {
   const [fetchDependency, setFechDependency] = useState(false);
   const [amount, setAmount] = useState(1);
   const [modalIsOpen, setIsOpen] = useState(false);
+  const [modalControlData, setModalControlData] = useState({
+    productId: 0,
+    price: 0,
+  });
 
   const navigate = useNavigate();
   const client = JSON.parse(localStorage.getItem("client"));
@@ -43,7 +47,6 @@ export default function Restaurant() {
   }
 
   async function removeProductFromCart(productId) {
-    
     await removeProductsFromCart(productId, config);
     setFechDependency(!fetchDependency);
   }
@@ -52,8 +55,9 @@ export default function Restaurant() {
     navigate(`/order/${productId}`);
   }
 
-  function openModal() {
+  function openModal(productId) {
     setAmount(1);
+    console.log(productId);
     setIsOpen(true);
   }
 
@@ -61,18 +65,12 @@ export default function Restaurant() {
     setAmount("");
     setIsOpen(false);
   }
-  let subtitle;
-
-  function afterOpenModal() {
-    subtitle.style.color = "#f00";
-  }
 
   function renderProducts() {
     if (categories && categories.length > 0) {
       return categories.map((category) => {
         return (
           <div className="categorieContainer">
-            <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Hello</h2>
             <h2 className="categoryName">{category.category}</h2>
             <div className="productsContainer">
               {category.products.map((product) => {
@@ -94,13 +92,18 @@ export default function Restaurant() {
                     {!product.inCart ? (
                       <div className="addQuant">
                         <Button
-                          onClick={openModal}
+                          onClick={() => {
+                            setModalControlData({
+                              price: product.price,
+                              productId: product.productId,
+                            });
+                            openModal(product.productId);
+                          }}
                           width={"90%"}
                           content={"Adicionar ao carrinho"}
                         />
                         <Modal
                           isOpen={modalIsOpen}
-                          onAfterOpen={afterOpenModal}
                           onRequestClose={closeModal}
                           style={customStyles}
                         >
@@ -113,12 +116,15 @@ export default function Restaurant() {
                               defaultValue={1}
                               className="addInput"
                             />
-                            <span> Valor total:R${amount * product.price}</span>
+                            <span>
+                              {" "}
+                              Valor total: R$ {amount * modalControlData.price}
+                            </span>
                           </div>
                           <Button
                             onClick={() => {
-                              addProductsToCart(product.productId);
-                              setIsOpen(false);
+                              addProductsToCart(modalControlData.productId);
+                              closeModal();
                             }}
                             width={"50%"}
                             content={"Adicionar ao carrinho"}

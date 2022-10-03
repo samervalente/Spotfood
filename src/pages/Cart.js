@@ -31,6 +31,10 @@ async function removeProductFromCart(productId) {
     setFechDependency(!fetchDependency);
   }
 
+  async function finishOrder(){
+    console.log(cartInfos)
+  }
+
 
   function renderCart() {
     if (cartProducts && cartProducts.length > 0) {
@@ -77,9 +81,11 @@ async function removeProductFromCart(productId) {
         </div>
         <div className="cartContainer">{renderCart()}</div>
         <div className="cartActions">
-          <Link to={`/orders/orderId`}>
-            <Button content={"Finalizar compra"} />
-          </Link>
+          
+            <Link to={`/orders/${cartInfos.cartId}`}> 
+              <Button onClick={() => finishOrder()} content={"Finalizar compra"} />
+            </Link>
+          
 
           {cartInfos.totalPrice ? (
             <span>Total: R${cartInfos.totalPrice.toFixed(2)}</span>
