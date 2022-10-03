@@ -34,6 +34,15 @@ export async function getClientCart(config) {
     const { data } = await axios.get(`${baseURL}/clients/carts`, config);
     return data;
   } catch (error) {
-    alert("Não foi possível carregar o carrinho");
+    alert("Não foi possível carregar o carrinho.");
+  }
+}
+
+export async function getClientOrders(config) {
+  try {
+    const { data } = await axios.get(`${baseURL}/clients/orders`, config);
+    return data;
+  } catch (error) {
+    alert("Não foi possível carregar os pedidos.");
   }
 }
