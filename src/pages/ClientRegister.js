@@ -39,49 +39,54 @@ export default function ClientRegister() {
           <div className="forms">
             <img src={pana} alt="panaimg" />
             <form onSubmit={handlerSubmit}>
-              <Input
-                placeholder={"Nome"}
+              <input
+                placeholder="Nome"
+                data-test-id="input-register-name"
                 onChange={(e) =>
                   setClientData({ ...clientData, name: e.target.value })
                 }
               />
-
-              <Input
+              <input
                 type="email"
-                placeholder={"Email"}
+                placeholder="Email"
+                data-test-id="input-register-email"
                 onChange={(e) =>
                   setClientData({ ...clientData, email: e.target.value })
                 }
               />
-
-              <Input
-                placeholder={"URL da imagem de perfil"}
+              <input
+                placeholder="URL da imagem do perfil"
+                data-test-id="input-register-avatar"
                 onChange={(e) =>
                   setClientData({ ...clientData, imageProfile: e.target.value })
                 }
               />
-
-              <Input
+              <input
                 type="password"
-                placeholder={"Senha"}
+                placeholder="Senha"
+                data-test-id="input-register-password"
                 onChange={(e) =>
                   setClientData({ ...clientData, password: e.target.value })
                 }
               />
-
-              <Input
+              <input
                 type="password"
-                placeholder={"Confirme a senha"}
+                placeholder="Confirmação de senha"
+                data-test-id="input-register-confirmPassword"
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
-              <Button width={"80%"} type={"submit"} content={"Registrar-se"} />
-              <h2>
-                Já possui uma conta? Faça{" "}
-                <strong>
-                  <Link to="/">Login</Link>
-                </strong>
-              </h2>
+
+              <button type="submit" data-test-id="button-register-register">
+                Registrar
+              </button>
             </form>
+
+            <h2>
+              Já possui uma conta? Faça{" "}
+              <strong>
+                <Link to="/">Login</Link>
+              </strong>
+            </h2>
           </div>
         </div>
       </Body>

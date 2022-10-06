@@ -4,8 +4,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { loginClient } from "../api/clientAPI";
 import foodbg from "../assets/images/foodbgv2.jpg";
 import logo from "../assets/images/logo.png";
-import Button from "../assets/shared/Button";
-import Input from "../assets/shared/Input";
 import ClientContext from "../contexts/clientContext";
 
 export default function Home() {
@@ -38,22 +36,25 @@ export default function Home() {
             Entre agora na sua conta <strong>Spotfood</strong>
           </h2>
           <form onSubmit={handlerSubmit}>
-            <Input
-              type={"email"}
-              placeholder={"Email"}
+            <input
+              type="email"
+              placeholder="email"
+              data-test-id="input-login-email"
               onChange={(e) =>
                 setClientData({ ...clientData, email: e.target.value })
               }
             />
-            <Input
-              type={"password"}
-              placeholder={"Senha"}
+            <input
+              type="password"
+              placeholder="password"
+              data-test-id="input-login-password"
               onChange={(e) =>
                 setClientData({ ...clientData, password: e.target.value })
               }
             />
-
-            <Button type={"submit"} width={"80%"} content="Entrar" />
+            <button type="submit" data-test-id="button-login-enter">
+              Entrar
+            </button>
           </form>
           <Link to="/register">
             <h2>

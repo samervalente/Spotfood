@@ -3,6 +3,7 @@ import logo from "../assets/images/logo.png";
 import { AiOutlineHome, AiOutlineShoppingCart } from "react-icons/ai";
 import { IoMdPaper } from "react-icons/io";
 import { MdOutlineFavoriteBorder } from "react-icons/md";
+import {BsQuestionCircle} from "react-icons/bs"
 import { Link } from "react-router-dom";
 
 export default function LeftBar() {
@@ -30,8 +31,8 @@ export default function LeftBar() {
             </Link>
           </div>
           <div className="favo">
-            <MdOutlineFavoriteBorder className="icon" />
-            <h2>Favoritos</h2>
+            <BsQuestionCircle className="icon" />
+            <h2>O que vou comer hoje?</h2>
           </div>
         </div>
       </LeftBarComponent>
@@ -72,7 +73,7 @@ const LeftBarComponent = styled.div`
     margin-top: 30px;
     display: flex;
     justify-content: flex-start;
-    width: 70%;
+    width: 80%;
     cursor: pointer;
     font-family: "Roboto";
     align-items: flex-end;

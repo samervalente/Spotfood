@@ -73,6 +73,7 @@ export default function Order() {
                       <div className="addAmount">
                         <span>Quantidade: {amount}</span>
                         <button
+                        data-test-id="button-add"
                           onClick={() => addAmount("add")}
                           className="amount"
                         >
@@ -99,10 +100,10 @@ export default function Order() {
                   <div className="adress">
                     <h2>Informações de entrega</h2>
                     <form onSubmit={handlerPurchase}>
-                      <Input type="text" placeholder={"CEP"} required />
-                      <Input placeholder={"Número"} required />
-                      <Input placeholder={"Complemento"} required />
-                      <Input placeholder={"Enviar observação (opcional)"} />
+                      <input data-test-id="cep" type="text" placeholder={"CEP"} required />
+                      <input data-test-id="number" placeholder={"Número"} required />
+                      <input data-test-id="complement" placeholder={"Complemento"} required />
+                      <input data-test-id="observation" placeholder={"Enviar observação (opcional)"} />
                       <Button
                         type={"submit"}
                         width={"50%"}

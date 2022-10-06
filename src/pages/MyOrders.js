@@ -7,7 +7,6 @@ import ReactStars from "react-stars";
 
 export default function Orders() {
   const [orders, setOrders] = useState([]);
-  const [rate, setRate] = useState(0);
 
   const client = JSON.parse(localStorage.getItem("client"));
   const config = {

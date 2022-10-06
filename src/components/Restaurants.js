@@ -10,6 +10,7 @@ export default function Restaurants() {
 
   const [uf, setUf] = useState("AC");
   const [statesList, setStatesList] = useState([]);
+
   const [cityList, setCityList] = useState([]);
   const [location, setLocation] = useState({
     state: "",
@@ -57,9 +58,14 @@ export default function Restaurants() {
     navigate(`/restaurant/${restaurantId}`);
   }
 
-  async function filterRestaurants() {
-    console.log(location);
-    const response = await filterRestaurants(config);
+  async function filterRestaurant() {
+    location.state = location.state.trim();
+    const response = await filterRestaurants(
+      location.state,
+      location.city,
+      config
+    );
+    console.log(response);
     setRestaurants(response);
   }
 
@@ -68,6 +74,7 @@ export default function Restaurants() {
       return (
         <div
           className="restaurantContainer"
+          data-test-id="div-restaurant"
           onClick={() => exploreRestaurant(restaurant.id)}
         >
           <img className="restaurantImage" src={restaurant.imageProfile} />
@@ -89,6 +96,7 @@ export default function Restaurants() {
         <div className="filter">
           <div className="select">
             <select
+              data-test-id="select-states"
               value={uf}
               onChange={(e) => {
                 setUf(e.target.value);
@@ -108,6 +116,7 @@ export default function Restaurants() {
           <div className="select">
             {cityList.length > 0 ? (
               <select
+                data-test-id="select-city"
                 className="selectCity"
                 onChange={(e) => {
                   setLocation({ ...location, city: e.target.value });
@@ -121,11 +130,12 @@ export default function Restaurants() {
               ""
             )}
           </div>
-          <Button
-            onClick={() => filterRestaurants()}
-            width={"10%"}
-            content={"Filtrar"}
-          />
+          <button
+            onClick={() => filterRestaurant()}
+            data-test-id="button-filter"
+          >
+            Filtrar
+          </button>
         </div>
         <h3 className="title">
           Os melhores restaurantes do Brasil estão aqui na{" "}
