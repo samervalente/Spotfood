@@ -1,16 +1,20 @@
 import styled from "styled-components";
 import LeftBar from "../components/LeftBar";
+import { ToastContainer, toast } from "react-toastify";
 import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getProductById, registerPurchase } from "../api/productsAPI";
-import Button from "../assets/shared/Button";
-import Input from "../assets/shared/Input";
+import {ButtonDefault, ButtonGreen} from "../assets/shared/Button";
+import { ThreeDots } from  'react-loader-spinner'
+
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Order() {
   const { id } = useParams();
   const client = JSON.parse(localStorage.getItem("client"));
   const [product, setProduct] = useState({});
   const [amount, setAmount] = useState(1);
+  const [isProcessRequest, setIsProcessRequest] = useState(false)
   const [isOrderFinished, setIsOrderFinished] = useState(false);
 
   const order = {
@@ -28,6 +32,16 @@ export default function Order() {
       authorization: `Bearer ${client.token}`,
     },
   };
+
+  const notify = () => toast.success('Compra realizada com sucesso! Visualize seu pedido na aba "Meus pedidos".', {
+    position: "top-right",
+    autoClose: 7000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    });;
 
   useEffect(() => {
     async function fetchData() {
@@ -47,16 +61,36 @@ export default function Order() {
 
   async function handlerPurchase(e) {
     e.preventDefault();
-    console.log(order);
+    setIsProcessRequest(true)
     await registerPurchase(order, config);
-    setIsOrderFinished(true);
+    
+    setTimeout(() => {
+      setIsOrderFinished(true)
+      notify()
+    }, 2000)
   }
+ 
 
   return (
     <>
       <Container>
         <LeftBar />
+        
         <MainContent>
+        <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        />
+       
+        <ToastContainer />
+                         
           {product.price ? (
             <div className="orderContainer">
               {!isOrderFinished ? (
@@ -72,19 +106,20 @@ export default function Order() {
                       </p>
                       <div className="addAmount">
                         <span>Quantidade: {amount}</span>
-                        <button
+                        <ButtonDefault
                         data-test-id="button-add"
                           onClick={() => addAmount("add")}
                           className="amount"
                         >
                           +
-                        </button>
-                        <button
+                        </ButtonDefault>
+                        <ButtonDefault
                           onClick={() => addAmount("minus")}
                           className="amount"
                         >
                           -
-                        </button>
+                        </ButtonDefault>
+                      
                       </div>
                       <h3>
                         Total:{" "}
@@ -101,14 +136,24 @@ export default function Order() {
                     <h2>Informações de entrega</h2>
                     <form onSubmit={handlerPurchase}>
                       <input data-test-id="cep" type="text" placeholder={"CEP"} required />
-                      <input data-test-id="number" placeholder={"Número"} required />
+                      <input data-test-id="number" placeholder={"Número"}  required />
                       <input data-test-id="complement" placeholder={"Complemento"} required />
                       <input data-test-id="observation" placeholder={"Enviar observação (opcional)"} />
-                      <Button
+                      <ButtonGreen
                         type={"submit"}
-                        width={"50%"}
-                        content={"Finalizar compra"}
-                      />
+                      >
+                        {isProcessRequest?
+                        <ThreeDots 
+                            height="30" 
+                            width="80" 
+                            radius="9"
+                            color="white" 
+                            ariaLabel="three-dots-loading"
+                            wrapperStyle={{}}
+                            wrapperClassName=""
+                            visible={true}
+                        />: "Finalizar compra"}
+                      </ButtonGreen>
                     </form>
                   </div>
                 </>
@@ -116,13 +161,13 @@ export default function Order() {
                 <div className="thanks">
                   <h2>Agradecemos pela compra. Volte sempre! =)</h2>
                   <Link to="/home">
-                    <Button content={"Voltar para a home"} />
+                    <ButtonDefault content={"Voltar para a home"}> Voltar para a home </ButtonDefault>
                   </Link>
                   <Link to="/orders">
-                    <Button content={"Visualizar meus pedidos"} />
+                    <ButtonDefault content={"Visualizar meus pedidos"} >  Visualizar meus pedidos</ButtonDefault>
                   </Link>
                   <Link to="/cart">
-                    <Button content={"Visualizar meu carrinho"} />
+                    <ButtonDefault >Visualizar meu carrinho</ButtonDefault> 
                   </Link>
                 </div>
               )}
@@ -131,7 +176,9 @@ export default function Order() {
             "Carregando..."
           )}
         </MainContent>
+      
       </Container>
+      <ToastContainer />
     </>
   );
 }
@@ -219,16 +266,45 @@ const MainContent = styled.div`
       }
     }
   }
-  .adress {
-    button {
-      background-color: green;
+  
+  form{
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+  }
+
+  input{
+    width: 100%;
+    height:30px;
+    border:none;
+    border-radius: 5px;
+    background-color: red;
+    color:white;
+    outline:none;
+    padding:10px;
+
+    ::placeholder{
+      color:white;
     }
   }
 
+
   .thanks {
+    width:100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+  
+    gap:15px;
+
+    a{
+      text-decoration: none;
+      width: 60%;
+    }
+
+    button{
+      width: 100%;
+    }
   }
 `;

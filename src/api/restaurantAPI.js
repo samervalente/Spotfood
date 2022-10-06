@@ -16,11 +16,23 @@ export async function getRestaurantById(restaurantId, config) {
       `${baseURL}/restaurants/${restaurantId}`,
       config
     );
-      console.log(data)
+
     return data;
   } catch (error) {
     console.log(error);
     alert("Não foi possível pegar os dados do restaurante.");
+  }
+}
+
+export async function getRestaurantProducts(restaurantId, config) {
+  try {
+    const { data } = await axios.get(
+      `${baseURL}/restaurants/${restaurantId}/products`,
+      config
+    );
+    return data;
+  } catch (error) {
+    alert("Não foi possível carregar os produtos deste restaurante.");
   }
 }
 
@@ -38,4 +50,3 @@ export async function filterRestaurants(state, city, config) {
     );
   }
 }
-

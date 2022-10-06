@@ -2,7 +2,7 @@ import styled from "styled-components";
 import LeftBar from "../components/LeftBar";
 import { getClientOrders } from "../api/clientAPI";
 import { useEffect, useState } from "react";
-import Button from "../assets/shared/Button";
+import { ButtonDefault } from "../assets/shared/Button";
 import ReactStars from "react-stars";
 
 export default function Orders() {
@@ -34,8 +34,9 @@ export default function Orders() {
                   <img src={product.imageUrl} />
                   <p>{product.name}</p>
                   <p>Quantidade: {product.amount}</p>
-                 <div className="feedback">
-                  Avaliação: <ReactStars
+                  <div className="feedback">
+                    Avaliação:{" "}
+                    <ReactStars
                       count={5}
                       value={product.rate}
                       size={24}
@@ -48,11 +49,15 @@ export default function Orders() {
           </div>
           <div className="orderInfosContainer">
             <span className="orderCode">
-             <span>Pedido: <span className="orderCode">{order.order}</span></span>
+              <span>
+                Pedido: <span className="orderCode">{order.order}</span>
+              </span>
             </span>
             <span>Data: {order.date.replaceAll("-", "/")}</span>
-            <span>Valor total: <span className="totalValue">R$ {order.totalValue}</span></span>
-           
+            <span>
+              Valor total:{" "}
+              <span className="totalValue">R$ {order.totalValue}</span>
+            </span>
           </div>
         </div>
       );
@@ -72,7 +77,7 @@ export default function Orders() {
               <div>
                 {" "}
                 <h2>Nenhum pedido efetuado ainda :( Que tal </h2>{" "}
-                <Button content={"Explorar restaurantes"} />{" "}
+                <ButtonDefault content={"Explorar restaurantes"} />{" "}
               </div>
             )}
           </div>
@@ -125,28 +130,26 @@ const MainContent = styled.div`
       display: flex;
       align-items: center;
       overflow-x: scroll;
-      gap: 20px;    
+      gap: 20px;
       height: 250px;
 
       .product {
         box-shadow: 2px 2px 2px 2px gray;
         border-radius: 5px;
         padding: 10px;
-        
+
         height: 200px;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-       
-       
+
         p {
           width: 90%;
           font-size: 14px;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
-         
         }
 
         img {
@@ -156,17 +159,17 @@ const MainContent = styled.div`
       }
     }
 
-    .orderInfosContainer{
+    .orderInfosContainer {
       display: flex;
       justify-content: space-between;
-      font-size:14px;
+      font-size: 14px;
 
-      .orderCode{
-        color:gray
+      .orderCode {
+        color: gray;
       }
 
-      .totalValue{
-        color:red;
+      .totalValue {
+        color: red;
         font-weight: bold;
       }
     }

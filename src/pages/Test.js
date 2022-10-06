@@ -12,11 +12,11 @@ export default function Home() {
         <div className="header">
           <img src={logo} />
           <div>
-          <Link to="/clients/login">
-            <p>
+            <Link to="/clients/login">
+              <p>
                 Entrar como <strong>cliente</strong>
               </p>
-          </Link>
+            </Link>
             <p>
               Entrar como <strong>restaurante</strong>
             </p>
@@ -33,7 +33,7 @@ export default function Home() {
               casa.
             </p>
             <Link to="/clients/register">
-              <Button content={"Quero comer"} />
+              <ButtonDefault content={"Quero comer"} />
             </Link>
           </div>
           <div className="right-side">
@@ -47,7 +47,7 @@ export default function Home() {
             </p>
 
             <Link to="/restaurants/register">
-              <Button content={"Quero iniciar meu negócio"} />
+              <ButtonDefault content={"Quero iniciar meu negócio"} />
             </Link>
           </div>
         </div>
@@ -143,10 +143,10 @@ const Body = styled.div`
   }
 
   a {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      width: 100%;
-    }
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    width: 100%;
+  }
 `;

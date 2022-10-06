@@ -1,18 +1,20 @@
-import styled from "styled-components";
-import { useNavigate, useParams } from "react-router-dom";
-import LeftBar from "../components/LeftBar";
 import { useEffect, useState } from "react";
-import { getRestaurantById } from "../api/restaurantAPI";
+import styled from "styled-components";
+import { useNavigate, useParams, Link } from "react-router-dom";
+import { ImLocation2 } from "react-icons/im";
+import { FaStore } from "react-icons/fa";
+import LeftBar from "../components/LeftBar";
+import { getRestaurantById, getRestaurantProducts } from "../api/restaurantAPI";
 import { addProductToCart, removeProductsFromCart } from "../api/productsAPI";
-import Button from "../assets/shared/Button";
+import { ButtonDefault, ButtonGreen } from "../assets/shared/Button";
 import Modal from "react-modal";
 
 Modal.setAppElement("#root");
 
 export default function Restaurant() {
   const { restaurantId } = useParams();
-  const [restaurant, setRestaurant] = useState({});
-  const [categories, setCategories] = useState([]);
+  const [restaurantInfos, setRestaurantInfos] = useState({});
+  const [restaurantProducts, setRestaurantProducts] = useState([]);
   const [fetchDependency, setFechDependency] = useState(false);
   const [amount, setAmount] = useState(1);
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -32,8 +34,16 @@ export default function Restaurant() {
   useEffect(() => {
     async function fetchData() {
       const response = await getRestaurantById(restaurantId, config);
-      setRestaurant(response);
-      setCategories(response.productsCategorie);
+      setRestaurantInfos(response[0]);
+    }
+
+    fetchData();
+  }, [fetchDependency]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const response = await getRestaurantProducts(restaurantId, config);
+      setRestaurantProducts(response.productsCategorie);
     }
 
     fetchData();
@@ -55,9 +65,8 @@ export default function Restaurant() {
     navigate(`/order/${productId}`);
   }
 
-  function openModal(productId) {
+  function openModal() {
     setAmount(1);
-    console.log(productId);
     setIsOpen(true);
   }
 
@@ -67,8 +76,8 @@ export default function Restaurant() {
   }
 
   function renderProducts() {
-    if (categories && categories.length > 0) {
-      return categories.map((category) => {
+    if (restaurantProducts && restaurantProducts.length > 0) {
+      return restaurantProducts.map((category) => {
         return (
           <div className="categorieContainer">
             <h2 className="categoryName">{category.category}</h2>
@@ -82,16 +91,17 @@ export default function Restaurant() {
                       R$ {product.price.toFixed(2).replace(".", ",")}
                     </span>
                     <span>{product.description}</span>
-                    <Button
-                      className="removeFromCart"
+                    <ButtonDefault
                       width={"90%"}
                       onClick={() => purchase(product.productId)}
-                      content={"Comprar"}
-                    />
+                    >
+                      Comprar
+                    </ButtonDefault>
 
                     {!product.inCart ? (
                       <div className="addQuant">
-                        <Button
+                        <ButtonGreen
+                          className="addToCart"
                           onClick={() => {
                             setModalControlData({
                               price: product.price,
@@ -100,8 +110,9 @@ export default function Restaurant() {
                             openModal(product.productId);
                           }}
                           width={"90%"}
-                          content={"Adicionar ao carrinho"}
-                        />
+                        >
+                          Adicionar ao carrinho
+                        </ButtonGreen>
                         <Modal
                           isOpen={modalIsOpen}
                           onRequestClose={closeModal}
@@ -121,22 +132,24 @@ export default function Restaurant() {
                               Valor total: R$ {amount * modalControlData.price}
                             </span>
                           </div>
-                          <Button
+                          <ButtonDefault
                             onClick={() => {
                               addProductsToCart(modalControlData.productId);
                               closeModal();
                             }}
                             width={"50%"}
-                            content={"Adicionar ao carrinho"}
-                          />
+                          >
+                            Adicionar ao carrinho
+                          </ButtonDefault>
                         </Modal>
                       </div>
                     ) : (
-                      <Button
+                      <ButtonDefault
                         onClick={() => removeProductFromCart(product.productId)}
                         width={"90%"}
-                        content={"Remover do carrinho"}
-                      />
+                      >
+                        Remover do carrinho
+                      </ButtonDefault>
                     )}
                   </div>
                 );
@@ -145,6 +158,15 @@ export default function Restaurant() {
           </div>
         );
       });
+    } else {
+      return (
+        <div className="noProductsContainer">
+          <p>Estamos abastacendo a loja. Fique de olho ;)</p>
+          <Link to="/home">
+            <ButtonDefault>Explorar restaurantes</ButtonDefault>
+          </Link>
+        </div>
+      );
     }
   }
 
@@ -154,13 +176,22 @@ export default function Restaurant() {
         <LeftBar />
         <MainContent>
           <div className="topInfos">
-            <img src={restaurant.imageProfile} />
+            <img src={restaurantInfos.imageProfile} />
             <div className="restaurantInfos">
-              <h2>{restaurant.restaurantName}</h2>
+              <div className="name">
+                <FaStore className="icon store" />
+                <h2>{restaurantInfos.name}</h2>
+              </div>
               <p>
                 Veja todos os produtos de{" "}
-                <strong>{restaurant.restaurantName}</strong>
+                <strong>{restaurantInfos.name}</strong>
               </p>
+              <div className="location">
+                <ImLocation2 className="icon" />{" "}
+                <span>
+                  {restaurantInfos.state} - {restaurantInfos.city}
+                </span>
+              </div>
             </div>
           </div>
           <div className="products">{renderProducts()}</div>
@@ -231,8 +262,29 @@ const MainContent = styled.div`
     align-items: center;
 
     .restaurantInfos {
-      margin-left: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-left: 15px;
+
+      .icon {
+        color: white;
+      }
+
+      .icon.store {
+        font-size: 60px;
+      }
+
+      .name,
+      .location {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+
       h2 {
+        font-weight: bold;
+        font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
         font-size: 50px;
       }
     }
@@ -243,12 +295,11 @@ const MainContent = styled.div`
     }
   }
   .products {
-    background-color: white;
-
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 
     .categorieContainer {
       height: 500px;
@@ -273,6 +324,7 @@ const MainContent = styled.div`
           display: flex;
           flex-direction: column;
           gap: 10px;
+          padding:10px;
           align-items: center;
           border-radius: 2px;
           height: 300px;
@@ -287,6 +339,7 @@ const MainContent = styled.div`
         }
 
         .addQuant {
+          width: 100%;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -317,6 +370,35 @@ const MainContent = styled.div`
       img {
         height: 100px;
         border-radius: 5px;
+      }
+    }
+  }
+
+  .noProductsContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    height: calc(100vh - 300px);
+
+    a {
+      width: 100%;
+    }
+
+    button {
+      width: 100%;
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      height: 30px;
+      font-size: 16px;
+      transition: all linear 0.3s;
+      cursor: pointer;
+      :hover {
+        background-color: orange;
+
+        color: red;
       }
     }
   }

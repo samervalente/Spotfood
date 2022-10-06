@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { loginClient } from "../api/clientAPI";
 import foodbg from "../assets/images/foodbgv2.jpg";
 import logo from "../assets/images/logo.png";
+import {ButtonDefault} from "../assets/shared/Button"
 import ClientContext from "../contexts/clientContext";
 
 export default function Home() {
@@ -36,7 +37,7 @@ export default function Home() {
             Entre agora na sua conta <strong>Spotfood</strong>
           </h2>
           <form onSubmit={handlerSubmit}>
-            <input
+            <input className=""
               type="email"
               placeholder="email"
               data-test-id="input-login-email"
@@ -52,9 +53,9 @@ export default function Home() {
                 setClientData({ ...clientData, password: e.target.value })
               }
             />
-            <button type="submit" data-test-id="button-login-enter">
+            <ButtonDefault type="submit" data-test-id="button-login-enter">
               Entrar
-            </button>
+            </ButtonDefault>
           </form>
           <Link to="/register">
             <h2>
@@ -94,11 +95,33 @@ const LeftBarComponent = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-left: 20px;
-  padding-top: 20px;
+  gap:10px;
+  padding:20px;
 
   .logo {
     width: 200px;
+  }
+
+  input{
+    width: 100%;
+    height:30px;
+    border:none;
+    border-radius: 5px;
+    background-color: red;
+    color:white;
+    outline:none;
+    padding:10px;
+
+    ::placeholder{
+      color:white;
+    }
+  }
+
+  form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap:10px;
   }
 
   h2 {
@@ -109,4 +132,24 @@ const LeftBarComponent = styled.div`
     text-decoration: none;
     color: black;
   }
+
+  button{
+      width: 100%;
+      background-color: green;
+      color:white;
+      border:none;
+      border-radius: 5px;
+      height: 30px;
+      font-size:16px;
+      transition: all linear 0.3s;
+      cursor:pointer;
+      :hover{
+        background-color: orange;
+        
+        color:red;
+
+      }
+    }
+
+ 
 `;

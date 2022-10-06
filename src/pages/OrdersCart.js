@@ -4,7 +4,7 @@ import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getClientCart } from "../api/clientAPI";
 import { removeProductsFromCart, registerPurchase } from "../api/productsAPI";
-import Button from "../assets/shared/Button";
+import { ButtonDefault } from "../assets/shared/Button";
 import Input from "../assets/shared/Input";
 
 export default function Order() {
@@ -68,7 +68,7 @@ export default function Order() {
                             <p className="price">
                               Preço unitário: R$ {product.price}
                             </p>
-                            <Button
+                            <ButtonDefault
                               onClick={() =>
                                 removeProductFromCart(product.productId)
                               }
@@ -91,7 +91,7 @@ export default function Order() {
                       <Input placeholder={"Número"} required />
                       <Input placeholder={"Complemento"} required />
                       <Input placeholder={"Enviar observação (opcional)"} />
-                      <Button
+                      <ButtonDefault
                         type={"submit"}
                         width={"50%"}
                         content={"Finalizar compra"}
@@ -103,13 +103,13 @@ export default function Order() {
                 <div className="thanks">
                   <h2>Agradecemos pela compra. Volte sempre! =)</h2>
                   <Link to="/home">
-                    <Button content={"Voltar para a home"} />
+                    <ButtonDefault content={"Voltar para a home"} />
                   </Link>
                   <Link to="/orders">
-                    <Button content={"Visualizar meus pedidos"} />
+                    <ButtonDefault content={"Visualizar meus pedidos"} />
                   </Link>
                   <Link to="/cart">
-                    <Button content={"Visualizar meu carrinho"} />
+                    <ButtonDefault content={"Visualizar meu carrinho"} />
                   </Link>
                 </div>
               )}

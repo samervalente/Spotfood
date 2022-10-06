@@ -3,9 +3,8 @@ import LeftBar from "../components/LeftBar";
 import { getClientCart } from "../api/clientAPI";
 import { removeProductsFromCart } from "../api/productsAPI";
 import { useEffect, useState } from "react";
-import Button from "../assets/shared/Button";
+import { ButtonDefault } from "../assets/shared/Button";
 import { Link } from "react-router-dom";
-
 
 export default function Cart() {
   const [cartInfos, setCartInfos] = useState({});
@@ -26,15 +25,14 @@ export default function Cart() {
     fetchData();
   }, [fetchDependency]);
 
-async function removeProductFromCart(productId) {
+  async function removeProductFromCart(productId) {
     await removeProductsFromCart(productId, config);
     setFechDependency(!fetchDependency);
   }
 
-  async function finishOrder(){
-    console.log(cartInfos)
+  async function finishOrder() {
+    console.log(cartInfos);
   }
-
 
   function renderCart() {
     if (cartProducts && cartProducts.length > 0) {
@@ -53,19 +51,27 @@ async function removeProductFromCart(productId) {
               Subtotal: R${" "}
               {(product.amount * product.price).toFixed(2).replace(".", ",")}
             </span>
-           
-           <Button onClick={() => removeProductFromCart(product.productId)} content={"Remover"} />
-      
+
+            <ButtonDefault
+              onClick={() => removeProductFromCart(product.productId)}
+            >
+              Remover
+            </ButtonDefault>
           </div>
         );
       });
     } else {
-      return <>
-            "Carrinho vazio :( <br/> Que tal adicionar alguns produtos?"
-            <Link to="/home">
-                <Button width={"30%"} content={"Ver restaurantes"}/>
-            </Link>
-      </>
+      return (
+        <>
+         <div className="emptyCart">
+         <p>Carrinho vazio :(</p>
+          <p> Que tal adicionar alguns produtos?</p>
+          <Link to="/home">
+            <ButtonDefault>Ver restaurantes</ButtonDefault>
+          </Link>
+         </div>
+        </>
+      );
     }
   }
 
@@ -81,11 +87,16 @@ async function removeProductFromCart(productId) {
         </div>
         <div className="cartContainer">{renderCart()}</div>
         <div className="cartActions">
-          
-            <Link to={`/orders/${cartInfos.cartId}`}> 
-              <Button onClick={() => finishOrder()} content={"Finalizar compra"} />
-            </Link>
-          
+          <Link to={`/orders/${cartInfos.cartId}`}>
+            {cartProducts && cartProducts.length > 0 ?   <ButtonDefault
+              onClick={() => finishOrder()}
+            
+            >Finalizar Compra</ButtonDefault>:   
+            <ButtonDefault
+            disabled
+            className="finishDisable"
+          >Finalizar Compra</ButtonDefault>}
+          </Link>
 
           {cartInfos.totalPrice ? (
             <span>Total: R${cartInfos.totalPrice.toFixed(2)}</span>
@@ -157,6 +168,26 @@ const Container = styled.div`
 
       span {
       }
+    }
+  }
+
+  a{
+    text-decoration: none;
+  }
+
+  .finishDisable{
+    background-color: gray;
+  }
+
+  .emptyCart{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap:10px;
+    button{
+      width: 100%;
     }
   }
 

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { registerClient } from "../api/clientAPI";
 import pana from "../assets/images/pana.png";
 import logo from "../assets/images/logo.png";
-import Button from "../assets/shared/Button";
+import {ButtonDefault} from "../assets/shared/Button";
 import Input from "../assets/shared/Input";
 
 export default function ClientRegister() {
@@ -36,8 +36,9 @@ export default function ClientRegister() {
           <div className="header">
             <img src={logo} alt="logoimg" />
           </div>
+          
           <div className="forms">
-            <img src={pana} alt="panaimg" />
+          <img src={pana} alt="panaimg" />
             <form onSubmit={handlerSubmit}>
               <input
                 placeholder="Nome"
@@ -76,18 +77,19 @@ export default function ClientRegister() {
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
 
-              <button type="submit" data-test-id="button-register-register">
+              <ButtonDefault type="submit" data-test-id="button-register-register">
                 Registrar
-              </button>
+              </ButtonDefault>
             </form>
 
-            <h2>
+      
+          </div>
+          <h2>
               Já possui uma conta? Faça{" "}
               <strong>
                 <Link to="/">Login</Link>
               </strong>
             </h2>
-          </div>
         </div>
       </Body>
     </>
@@ -103,7 +105,7 @@ const Body = styled.div`
   font-family: "Roboto";
 
   .container {
-    width: 70%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -115,16 +117,34 @@ const Body = styled.div`
   }
 
   .forms {
-    width: 70%;
+    width: 100%;
     display: flex;
+    gap:20px;
+    margin-bottom: 10px;
     align-items: center;
     justify-content: center;
   }
 
-  input {
-    outline: none;
+  input{
+    width: 100%;
+    height:30px;
+    border:none;
     border-radius: 5px;
-    margin-top: 10px;
+    background-color: red;
+    color:white;
+    outline:none;
+    padding:10px;
+
+    ::placeholder{
+      color:white;
+    }
+  }
+
+  form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap:10px;
   }
 
   h2 {
@@ -138,4 +158,24 @@ const Body = styled.div`
   a:visited {
     color: red;
   }
+
+  
+
+  button{
+      width: 100%;
+      background-color: green;
+      color:white;
+      border:none;
+      border-radius: 5px;
+      height: 30px;
+      font-size:16px;
+      transition: all linear 0.3s;
+      cursor:pointer;
+      :hover{
+        background-color: orange;
+        
+        color:red;
+
+      }
+    }
 `;

@@ -1,20 +1,18 @@
 import styled from "styled-components";
 
-export default function Button({ content, onClick, width, id, type }) {
-  return (
-    <ButtonComponent width={width}type={type} data-test-id={id} onClick={onClick}>{content}</ButtonComponent>
-  )
-}
 
-const ButtonComponent = styled.button`
-  background-color: red;
+const ButtonDefault = styled.button`
+  background-color:red;
   color:white;
   border: none;
   border-radius: 5px;
   width: ${props => props.width};
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   height: 30px;
-  font-size: 16px;
+  font-size: 1em;
   transition: all linear 0.5s;
 
   :hover {
@@ -23,3 +21,11 @@ const ButtonComponent = styled.button`
     cursor: pointer;
   }
 `;
+
+const ButtonGreen = styled(ButtonDefault)`
+background-color: green;
+
+`
+
+export {ButtonDefault, ButtonGreen}
+

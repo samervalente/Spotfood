@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { getAllRestaurants, filterRestaurants } from "../api/restaurantAPI";
-import Button from "../assets/shared/Button";
+import {ButtonDefault} from "../assets/shared/Button";
 import { getStates, getCity } from "../api/locationsAPI";
 
 export default function Restaurants() {
@@ -10,11 +10,11 @@ export default function Restaurants() {
 
   const [uf, setUf] = useState("AC");
   const [statesList, setStatesList] = useState([]);
-
+  const [fetchDependency, setFechDependency] = useState(false)
   const [cityList, setCityList] = useState([]);
   const [location, setLocation] = useState({
-    state: "",
-    city: "",
+    state: "Acre",
+    city: "Acrelândia",
   });
   const navigate = useNavigate();
 
@@ -50,7 +50,7 @@ export default function Restaurants() {
       setRestaurants(restaurants);
     }
     fetchData();
-  }, []);
+  }, [fetchDependency]);
 
   useEffect(() => {});
 
@@ -60,17 +60,18 @@ export default function Restaurants() {
 
   async function filterRestaurant() {
     location.state = location.state.trim();
+    console.log(location)
     const response = await filterRestaurants(
       location.state,
       location.city,
       config
     );
-    console.log(response);
+     
     setRestaurants(response);
   }
 
   function renderRestaurants() {
-    return restaurants.map((restaurant) => {
+    return restaurants.length > 0 ? restaurants.map((restaurant) => {
       return (
         <div
           className="restaurantContainer"
@@ -79,22 +80,31 @@ export default function Restaurants() {
         >
           <img className="restaurantImage" src={restaurant.imageProfile} />
           <p className="restaurantName">{restaurant.name}</p>
-          <div className="location">
-            <span className="city">{restaurant.city} -</span>
-            <span className="state">{restaurant.state}</span>
-            <Button width="100%" content="Explorar restaurante" />
-          </div>
+          <p>Estado: <span className="location">{restaurant.state}</span></p>
+          <p>Cidade: <span className="location">{restaurant.city}</span></p>
+          <ButtonDefault>Explorar restaurante</ButtonDefault>
         </div>
       );
-    });
+    }) : <div><p>Poxa! Não encontramos nenhum restaurante nesta localidade :(</p>
+     
+      <ButtonDefault className="back-home" onClick={() => setFechDependency(!fetchDependency)}>Continuar explorando</ButtonDefault>
+     
+    </div>
   }
 
   return (
     <>
       <Container>
-        <h2>Encontre o restaurante mais pertinho de você!</h2>
+        <div className="header">
+        <h3 className="title">
+          Os melhores restaurantes do Brasil estão aqui na{" "}
+          <strong>Spotfood!</strong>
+        </h3>
+        <h2 className="found">Encontre o restaurante mais pertinho de você!</h2>
         <div className="filter">
+        <span className="locationFilter">Estado</span>
           <div className="select">
+            
             <select
               data-test-id="select-states"
               value={uf}
@@ -113,6 +123,7 @@ export default function Restaurants() {
               })}
             </select>
           </div>
+          <span className="locationFilter">Cidade</span>
           <div className="select">
             {cityList.length > 0 ? (
               <select
@@ -130,17 +141,16 @@ export default function Restaurants() {
               ""
             )}
           </div>
-          <button
+          <ButtonDefault
+            className="filter"
             onClick={() => filterRestaurant()}
             data-test-id="button-filter"
           >
             Filtrar
-          </button>
+          </ButtonDefault>
         </div>
-        <h3 className="title">
-          Os melhores restaurantes do Brasil estão aqui na{" "}
-          <strong>Spotfood!</strong>
-        </h3>
+        </div>
+      
         <div className="restaurants">{renderRestaurants()}</div>
       </Container>
     </>
@@ -156,16 +166,38 @@ const Container = styled.div`
   gap: 50px;
   font-family: "Roboto";
 
+
+  .header{
+   display: flex;
+   flex-direction: column;
+   align-items: flex-start;
+   gap:15px;
+   width: 100%;
+  }
+
+  .found{
+    font-size:20px;
+    color:red;
+    font-weight: bold;
+  }
+
+  .locationFilter{
+    font-weight: bold;
+    font-size: 16px;
+    margin-right: 10px;
+  }
+
   .filter {
     display: flex;
-    align-items: center;
+    justify-content: center;
   }
 
   .restaurants {
     display: flex;
-
+    width: 100%;
+   
     flex-wrap: wrap;
-    gap: 70px;
+    gap: 40px;
   }
 
   .title {
@@ -176,37 +208,27 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     padding: 10px;
+    gap:10px;
     width: 220px;
-    height: 300px;
+    height: 350px;
     background-color: white;
     box-shadow: 2px 3px 3px 3px gray;
     border-radius: 5px;
     cursor: pointer;
 
     img {
-      width: 200px;
+      width: 100%;
       height: 200px;
       border-radius: 5px;
     }
 
-    .restaurantName {
-      margin-top: 20px;
-    }
+      .location{
+        color:red;
+        font-weight: 500;
+      }
 
-    .location {
-      margin-top: 10px;
-    }
-
-    .city {
-      margin-right: 5px;
-    }
-
-    .state {
-      color: red;
-      font-weight: bold;
-    }
   }
 
   select {
@@ -264,4 +286,35 @@ const Container = styled.div`
     font-family: "Arial";
     border-bottom: 2px solid black;
   }
+
+
+  button{
+      width: 100%;
+      background-color: red;
+      color:white;
+      border:none;
+      border-radius: 5px;
+      height: 30px;
+      font-size:16px;
+      transition: all linear 0.3s;
+      cursor:pointer;
+      :hover{
+        background-color: orange;
+        
+        color:red;
+
+      }
+    }
+
+    .filter{
+      width: 70%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .back-home{
+      width: 50%;
+      margin-top:10px
+    }
 `;
