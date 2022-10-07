@@ -178,19 +178,23 @@ export default function Order() {
         </MainContent>
       
       </Container>
-      <ToastContainer />
+     
     </>
   );
 }
 
 const Container = styled.div`
   display: flex;
+  
+  @media (max-width: 768px){
+    flex-direction: column;
+    width: 100vw;
+  }
 `;
 
 const MainContent = styled.div`
-  margin-left: 280px;
   background-color: red;
-  width: 100%;
+  width: 100vw;
   height: 100vh;
 
   display: flex;
@@ -200,7 +204,6 @@ const MainContent = styled.div`
 
   .orderContainer {
     display: flex;
-
     padding: 20px;
     background-color: white;
     height: 400px;
@@ -208,6 +211,18 @@ const MainContent = styled.div`
     border-radius: 8px;
     box-shadow: 2px 2px 4px 2px brown;
     font-family: "Roboto";
+
+    h2{
+      margin-bottom:10px;
+    }
+
+    @media (max-width:768px){
+      height: 100%;
+      width: 100%;
+      box-shadow: none;
+      border-radius: 0px;
+      flex-direction: column;
+    }
 
     h2 {
       font-size: 25px;
@@ -228,6 +243,8 @@ const MainContent = styled.div`
     .orderInfos {
       border-right: 2px solid lightgray;
       padding-right: 10px;
+
+     
     }
 
     .productInfos {
@@ -267,10 +284,22 @@ const MainContent = styled.div`
     }
   }
   
+  button{
+      width: 100%;
+
+      @media (max-width:768px){
+      width: 80%;
+    }
+  }
+
   form{
     display: flex;
     flex-direction: column;
     gap:10px;
+
+    @media (max-width:768px){
+     
+    }
   }
 
   input{
@@ -286,6 +315,11 @@ const MainContent = styled.div`
     ::placeholder{
       color:white;
     }
+
+    @media (max-width:768px){
+      width: 80%;
+    }
+
   }
 
 
@@ -305,6 +339,11 @@ const MainContent = styled.div`
 
     button{
       width: 100%;
+
+      @media (max-width:768px){
+     font-size: 1.2em;
+     height: 2em;
+    }
     }
   }
 `;
