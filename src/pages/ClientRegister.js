@@ -5,7 +5,7 @@ import { registerClient } from "../api/clientAPI";
 import pana from "../assets/images/pana.png";
 import logo from "../assets/images/logo.png";
 import {ButtonDefault} from "../assets/shared/Button";
-import Input from "../assets/shared/Input";
+
 
 export default function ClientRegister() {
   const [clientData, setClientData] = useState({
@@ -18,7 +18,7 @@ export default function ClientRegister() {
   const navigate = useNavigate();
 
   async function handlerSubmit(e) {
-    console.log(clientData);
+    
     e.preventDefault();
     if (clientData.password !== confirmPassword) {
       return alert("As senhas devem ser iguais.");

@@ -2,14 +2,24 @@ import styled from "styled-components";
 import logo from "../assets/images/logo.png";
 import { AiOutlineHome, AiOutlineShoppingCart } from "react-icons/ai";
 import { IoMdPaper } from "react-icons/io";
-import { MdOutlineFavoriteBorder } from "react-icons/md";
 import {BsQuestionCircle} from "react-icons/bs"
-import { Link } from "react-router-dom";
+import {RiLogoutCircleRFill} from "react-icons/ri"
+import { Link, useNavigate } from "react-router-dom";
+
 
 export default function LeftBar() {
+  const client = JSON.parse(localStorage.getItem("client"));
+  const navigate = useNavigate()
+
+  function logout(){
+    localStorage.removeItem("client")
+    navigate("/")
+  }
+
   return (
     <>
       <LeftBarComponent>
+        <div>
         <img className="logo" src={logo} alt="logo" />
         <div className="options">
           <div className="home">
@@ -35,6 +45,15 @@ export default function LeftBar() {
             <h2>O que vou comer hoje?</h2>
           </div>
         </div>
+        </div>
+        <div className="userInfos">
+          <div className="userProfile">
+            <img className="userImgProfile" src={client.imageProfile} />
+            <span>{client.name}</span>
+          </div>
+          <div className="div"></div>
+          <span className="logout" onClick={() => logout()}>Logout <RiLogoutCircleRFill className="icon logout" /> </span>
+        </div>
       </LeftBarComponent>
     </>
   );
@@ -50,8 +69,9 @@ const LeftBarComponent = styled.div`
   left: 0;
   display: flex;
   flex-direction: column;
-  padding-left: 20px;
-  padding-top: 20px;
+  justify-content: space-between;
+  padding:20px;
+  font-family: 'Roboto';
 
   .logo {
     width: 180px;
@@ -73,9 +93,8 @@ const LeftBarComponent = styled.div`
     margin-top: 30px;
     display: flex;
     justify-content: flex-start;
-    width: 80%;
+    width: 90%;
     cursor: pointer;
-    font-family: "Roboto";
     align-items: flex-end;
 
     .icon {
@@ -95,5 +114,47 @@ const LeftBarComponent = styled.div`
         color: orange;
       }
     }
+  }
+
+  .userInfos{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap:10px;
+
+    .userProfile{
+      display: flex;
+      align-items: center;
+      gap:10px;
+      .userImgProfile{
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+    }
+    }
+
+    .div{
+      height: 30px;
+      width: 2px;
+      background-color: gray;
+    }
+
+    .logout{
+      display:flex;
+      align-items: center;
+      gap:5px;
+      cursor:pointer;
+
+      color:red;
+
+    .icon.logout{
+      font-size:30px;
+
+     
+    }
+    }
+
+
+    
   }
 `;
