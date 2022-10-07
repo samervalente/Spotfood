@@ -22,11 +22,12 @@ export default function LeftBar() {
     <>
       
       <HamburguerContainer>
+      <img className="logo" src={logo} alt="logo" />
         <Hamburger direction="right" className="hamburguer" toggled={isOpen} toggle={setOpen} />
       </HamburguerContainer>
       <LeftBarComponent isOpen={isOpen}>
-     
-        <div>
+        <div className="optionsBar">
+            <div>
         <img className="logo" src={logo} alt="logo" />
         <div className="options">
           <div className="home">
@@ -61,6 +62,10 @@ export default function LeftBar() {
           <div className="div"></div>
           <span className="logout" onClick={() => logout()}>Logout <RiLogoutCircleRFill className="icon logout" /> </span>
         </div>
+        </div>
+        <div className="overlap" onClick={() => setOpen(false)}>
+
+        </div>
       </LeftBarComponent>
     </>
   );
@@ -70,34 +75,36 @@ const HamburguerContainer = styled.div`
   display:none;
   @media (max-width: 768px){
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
+      align-items: center;
       width: 100%;
       height: 100px;
-      position: absolute; 
-      right: 0;
-      top:0;
+      padding:15px;
 
+      img{
+        height: 100%;
+        width: 40%;
+      }
  
     }
-
-      
+  
 
 `
-
 const LeftBarComponent = styled.div`
-  background: white;
-  height: 100%;
-  width: 280px;
-  color: black;
-  box-shadow: 2px 2px 3px gray;
-  position: fixed;
-  left: 0;
+  height: 100vh;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding:20px;
-  font-family: 'Roboto';
-  
+
+  .optionsBar{
+    background: white;
+    width: 280px;
+    color: black;
+    box-shadow: 2px 2px 3px gray;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding:20px;
+    font-family: 'Roboto';
+    
   .logo {
     width: 180px;
   }
@@ -178,15 +185,39 @@ const LeftBarComponent = styled.div`
     }
   }
 
+  @media (max-width: 768px){
+    width: 60%;
+  }
+
+  }
+ 
 
   @media (max-width: 768px){
+    
+      z-index: 1;
+      position: fixed;
       display: ${props => props.isOpen ? "flex" : "none"};
-      width: 40%;
-      height: 100%;
+      width: 100vw;
+      height: 100vh;
       top:0;
       left:0;
 
-
+      .overlap{
+    height: 100vh;
+    width: 40%;
+    background-color: red ;
+    opacity: 0.5;
+    overflow-y: none;
+  }
+  .home,
+  .cart,
+  .orders,
+  .favo {
+    h2, .icon{
+    
+      font-size:22px;
+    }
+  }
  
     }
 

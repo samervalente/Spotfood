@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { getAllRestaurants, filterRestaurants } from "../api/restaurantAPI";
-import {ButtonDefault} from "../assets/shared/Button";
+import { ButtonDefault } from "../assets/shared/Button";
 import { getStates, getCity } from "../api/locationsAPI";
 
 export default function Restaurants() {
@@ -10,7 +10,7 @@ export default function Restaurants() {
 
   const [uf, setUf] = useState("AC");
   const [statesList, setStatesList] = useState([]);
-  const [fetchDependency, setFechDependency] = useState(false)
+  const [fetchDependency, setFechDependency] = useState(false);
   const [cityList, setCityList] = useState([]);
   const [location, setLocation] = useState({
     state: "Acre",
@@ -60,97 +60,110 @@ export default function Restaurants() {
 
   async function filterRestaurant() {
     location.state = location.state.trim();
-    console.log(location)
+    console.log(location);
     const response = await filterRestaurants(
       location.state,
       location.city,
       config
     );
-     
+
     setRestaurants(response);
   }
 
   function renderRestaurants() {
-    return restaurants.length > 0 ? restaurants.map((restaurant) => {
-      return (
-        <div
-          className="restaurantContainer"
-          data-test-id="div-restaurant"
-          onClick={() => exploreRestaurant(restaurant.id)}
+    return restaurants.length > 0 ? (
+      restaurants.map((restaurant) => {
+        return (
+          <div
+            className="restaurantContainer"
+            data-test-id="div-restaurant"
+            onClick={() => exploreRestaurant(restaurant.id)}
+          >
+            <img className="restaurantImage" src={restaurant.imageProfile} />
+            <p className="restaurantName">{restaurant.name}</p>
+            <p>
+              Estado: <span className="location">{restaurant.state}</span>
+            </p>
+            <p>
+              Cidade: <span className="location">{restaurant.city}</span>
+            </p>
+            <ButtonDefault>Explorar restaurante</ButtonDefault>
+          </div>
+        );
+      })
+    ) : (
+      <div className="notFound">
+        <p>Poxa! Não encontramos nenhum restaurante nesta localidade :(</p>
+
+        <ButtonDefault
+          className="back-home"
+          onClick={() => setFechDependency(!fetchDependency)}
         >
-          <img className="restaurantImage" src={restaurant.imageProfile} />
-          <p className="restaurantName">{restaurant.name}</p>
-          <p>Estado: <span className="location">{restaurant.state}</span></p>
-          <p>Cidade: <span className="location">{restaurant.city}</span></p>
-          <ButtonDefault>Explorar restaurante</ButtonDefault>
-        </div>
-      );
-    }) : <div><p>Poxa! Não encontramos nenhum restaurante nesta localidade :(</p>
-     
-      <ButtonDefault className="back-home" onClick={() => setFechDependency(!fetchDependency)}>Continuar explorando</ButtonDefault>
-     
-    </div>
+          Continuar explorando
+        </ButtonDefault>
+      </div>
+    );
   }
 
   return (
     <>
       <Container>
         <div className="header">
-        <h3 className="title">
-          Os melhores restaurantes do Brasil estão aqui na{" "}
-          <strong>Spotfood!</strong>
-        </h3>
-        <h2 className="found">Encontre o restaurante mais pertinho de você!</h2>
-        <div className="filter">
-        <span className="locationFilter">Estado</span>
-          <div className="select">
-            
-            <select
-              data-test-id="select-states"
-              value={uf}
-              onChange={(e) => {
-                setUf(e.target.value);
-                const state = e.target.value.split("-")[1];
-                setLocation({ ...location, state });
-              }}
-            >
-              {statesList.map((state) => {
-                return (
-                  <option className="selectState">
-                    {state.sigla} - {state.nome}
-                  </option>
-                );
-              })}
-            </select>
-          </div>
-          <span className="locationFilter">Cidade</span>
-          <div className="select">
-            {cityList.length > 0 ? (
+          <h3 className="title">
+            Os melhores restaurantes do Brasil estão aqui na{" "}
+            <strong>Spotfood!</strong>
+          </h3>
+          <h2 className="found">
+            Encontre o restaurante mais pertinho de você!
+          </h2>
+          <div className="filter">
+            <span className="locationFilter">Estado</span>
+            <div className="select">
               <select
-                data-test-id="select-city"
-                className="selectCity"
+                data-test-id="select-states"
+                value={uf}
                 onChange={(e) => {
-                  setLocation({ ...location, city: e.target.value });
+                  setUf(e.target.value);
+                  const state = e.target.value.split("-")[1];
+                  setLocation({ ...location, state });
                 }}
               >
-                {cityList.map((city) => {
-                  return <option>{city.nome}</option>;
+                {statesList.map((state) => {
+                  return (
+                    <option className="selectState">
+                      {state.sigla} - {state.nome}
+                    </option>
+                  );
                 })}
               </select>
-            ) : (
-              ""
-            )}
+            </div>
+            <span className="locationFilter">Cidade</span>
+            <div className="select">
+              {cityList.length > 0 ? (
+                <select
+                  data-test-id="select-city"
+                  className="selectCity"
+                  onChange={(e) => {
+                    setLocation({ ...location, city: e.target.value });
+                  }}
+                >
+                  {cityList.map((city) => {
+                    return <option>{city.nome}</option>;
+                  })}
+                </select>
+              ) : (
+                ""
+              )}
+            </div>
+            <ButtonDefault
+              onClick={() => filterRestaurant()}
+              data-test-id="button-filter"
+            >
+              Filtrar
+            </ButtonDefault>
           </div>
-          <ButtonDefault
-            className="filter"
-            onClick={() => filterRestaurant()}
-            data-test-id="button-filter"
-          >
-            Filtrar
-          </ButtonDefault>
         </div>
-        </div>
-      
+
         <div className="restaurants">{renderRestaurants()}</div>
       </Container>
     </>
@@ -160,49 +173,61 @@ export default function Restaurants() {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  margin-left: 280px;
   height: 100vh;
-  padding: 50px;
+  padding:20px;
   gap: 50px;
+  width: 100vw;
   font-family: "Roboto";
 
+  .header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    width: 100%;
 
-  .header{
-   display: flex;
-   flex-direction: column;
-   align-items: flex-start;
-   gap:15px;
-   width: 100%;
-  }
+    .title {
+    font-size: 25px;
+  } 
 
-  .found{
-    font-size:20px;
-    color:red;
+  .found {
+    font-size: 20px;
+    color: red;
     font-weight: bold;
   }
 
-  .locationFilter{
+  .filter {
+    display: flex;
+    justify-content: center; 
+  }
+
+    @media(max-width: 768px){
+      .filter{
+        justify-content: flex-start;
+        flex-direction: column;
+        gap:10px;
+      }
+    }
+    
+  }
+
+  .locationFilter {
     font-weight: bold;
     font-size: 16px;
     margin-right: 10px;
   }
 
-  .filter {
-    display: flex;
-    justify-content: center;
-  }
-
+ 
   .restaurants {
     display: flex;
     width: 100%;
-   
+    overflow-y: scroll;
     flex-wrap: wrap;
     gap: 40px;
+
+    
   }
 
-  .title {
-    font-size: 25px;
-  }
 
   .restaurantContainer {
     display: flex;
@@ -210,7 +235,7 @@ const Container = styled.div`
     justify-content: center;
     align-items: flex-start;
     padding: 10px;
-    gap:10px;
+    gap: 10px;
     width: 220px;
     height: 350px;
     background-color: white;
@@ -224,11 +249,10 @@ const Container = styled.div`
       border-radius: 5px;
     }
 
-      .location{
-        color:red;
-        font-weight: 500;
-      }
-
+    .location {
+      color: red;
+      font-weight: 500;
+    }
   }
 
   select {
@@ -287,34 +311,45 @@ const Container = styled.div`
     border-bottom: 2px solid black;
   }
 
+  button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    height: 30px;
+    font-size: 16px;
+    transition: all linear 0.3s;
+    cursor: pointer;
+    :hover {
+      background-color: orange;
 
-  button{
-      width: 100%;
-      background-color: red;
-      color:white;
-      border:none;
-      border-radius: 5px;
-      height: 30px;
-      font-size:16px;
-      transition: all linear 0.3s;
-      cursor:pointer;
-      :hover{
-        background-color: orange;
-        
-        color:red;
-
-      }
+      color: red;
     }
+  }
 
-    .filter{
-      width: 70%;
+
+  .notFound{
+    @media (max-width:768px){
+      font-size:25px;
+      text-align: center;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
+      gap:10px;
+      width: 100%;
     }
+  }
 
-    .back-home{
-      width: 50%;
-      margin-top:10px
+  .back-home {
+    width: 50%;
+    margin-top: 10px;
+
+    @media (max-width:768px){
+      font-size:25px;
+      height: 40px;
     }
+  }
 `;
