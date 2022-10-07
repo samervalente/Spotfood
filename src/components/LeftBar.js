@@ -1,24 +1,31 @@
 import styled from "styled-components";
 import logo from "../assets/images/logo.png";
+import { useState } from "react";
 import { AiOutlineHome, AiOutlineShoppingCart } from "react-icons/ai";
 import { IoMdPaper } from "react-icons/io";
 import {BsQuestionCircle} from "react-icons/bs"
 import {RiLogoutCircleRFill} from "react-icons/ri"
 import { Link, useNavigate } from "react-router-dom";
-
+import Hamburger from 'hamburger-react'
 
 export default function LeftBar() {
   const client = JSON.parse(localStorage.getItem("client"));
   const navigate = useNavigate()
+  const [isOpen, setOpen] = useState(false)
 
   function logout(){
     localStorage.removeItem("client")
     navigate("/")
   }
-
+ 
   return (
     <>
-      <LeftBarComponent>
+      
+      <HamburguerContainer>
+        <Hamburger direction="right" className="hamburguer" toggled={isOpen} toggle={setOpen} />
+      </HamburguerContainer>
+      <LeftBarComponent isOpen={isOpen}>
+     
         <div>
         <img className="logo" src={logo} alt="logo" />
         <div className="options">
@@ -59,9 +66,27 @@ export default function LeftBar() {
   );
 }
 
+const HamburguerContainer = styled.div`
+  display:none;
+  @media (max-width: 768px){
+      display: flex;
+      justify-content: flex-end;
+      width: 100%;
+      height: 100px;
+      position: absolute; 
+      right: 0;
+      top:0;
+
+ 
+    }
+
+      
+
+`
+
 const LeftBarComponent = styled.div`
   background: white;
-  height: 100vh;
+  height: 100%;
   width: 280px;
   color: black;
   box-shadow: 2px 2px 3px gray;
@@ -72,7 +97,7 @@ const LeftBarComponent = styled.div`
   justify-content: space-between;
   padding:20px;
   font-family: 'Roboto';
-
+  
   .logo {
     width: 180px;
   }
@@ -149,12 +174,21 @@ const LeftBarComponent = styled.div`
 
     .icon.logout{
       font-size:30px;
-
-     
     }
     }
-
-
-    
   }
+
+
+  @media (max-width: 768px){
+      display: ${props => props.isOpen ? "flex" : "none"};
+      width: 40%;
+      height: 100%;
+      top:0;
+      left:0;
+
+
+ 
+    }
+
+  
 `;

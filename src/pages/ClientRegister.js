@@ -38,7 +38,7 @@ export default function ClientRegister() {
           </div>
           
           <div className="forms">
-          <img src={pana} alt="panaimg" />
+          <img className="pana" src={pana} alt="panaimg" />
             <form onSubmit={handlerSubmit}>
               <input
                 placeholder="Nome"
@@ -109,21 +109,24 @@ const Body = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap:20px;
+   
   }
 
   .header {
     width: 150px;
-    height: 150px;
+    height: 100%;
+  
   }
 
   .forms {
-    width: 100%;
+   
     display: flex;
     gap:20px;
-    margin-bottom: 10px;
     align-items: center;
     justify-content: center;
   }
+
 
   input{
     width: 100%;
@@ -141,10 +144,11 @@ const Body = styled.div`
   }
 
   form{
+    width: 80%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap:10px;
+    gap:12px;
   }
 
   h2 {
@@ -159,7 +163,6 @@ const Body = styled.div`
     color: red;
   }
 
-  
 
   button{
       width: 100%;
@@ -171,11 +174,31 @@ const Body = styled.div`
       font-size:16px;
       transition: all linear 0.3s;
       cursor:pointer;
+      margin-top:10px;
       :hover{
         background-color: orange;
-        
         color:red;
 
+      }
+    }
+
+    @media (max-width:768px){
+      .pana{
+        display: none;
+      }
+
+      .header{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        img{
+          width: 50%;
+          height: 60px;
+        }
+      }
+
+      .forms{
+        width: 100%;
       }
     }
 `;
