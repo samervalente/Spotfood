@@ -77,7 +77,8 @@ export default function Cart() {
 
   return (
     <>
-      <LeftBar />
+     <MainSection>
+     <LeftBar />
       <Container>
         <div className="user">
           <h1>
@@ -105,14 +106,23 @@ export default function Cart() {
           )}
         </div>
       </Container>
+     </MainSection>
     </>
   );
 }
 
+const MainSection = styled.div`
+display: flex;
+
+@media (max-width:768px){
+  flex-direction: column;
+}
+`
+
 const Container = styled.div`
   background-color: red;
   height: 100vh;
-  margin-left: 280px;
+  width: 100vw;
   color: white;
   font-family: "Roboto";
 
@@ -123,8 +133,10 @@ const Container = styled.div`
   gap: 10px;
 
   .user {
+    padding:10px;
+    text-align: center;
     h1 {
-      font-size: 25px;
+      font-size: 1.5em;
     }
   }
 
@@ -138,7 +150,7 @@ const Container = styled.div`
     flex-direction: column;
     gap: 10px;
     padding: 10px;
-    overflow: scroll;
+    overflow-y: scroll;
 
     .cartInfos {
       display: grid;
@@ -167,6 +179,22 @@ const Container = styled.div`
       }
 
       span {
+      }
+    }
+
+    @media (max-width:768px){
+
+      .cartInfos{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap:10px;
+        height: 300px;
+        
+
+        button{
+          width: 50%;
+        }
       }
     }
   }
@@ -201,5 +229,19 @@ const Container = styled.div`
     align-items: center;
     justify-content: space-between;
     padding: 10px 65px;
+
+    @media (max-width:768px){
+      gap:10px;
+      width: 80%;
+     
+      a{
+        width: 100%;
+        button{
+          width: 100%;
+        }
+      }
+
+       
+      }
   }
 `;

@@ -4,17 +4,17 @@ import { ToastContainer, toast } from "react-toastify";
 import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getProductById, registerPurchase } from "../api/productsAPI";
-import {ButtonDefault, ButtonGreen} from "../assets/shared/Button";
-import { ThreeDots } from  'react-loader-spinner'
+import { ButtonDefault, ButtonGreen } from "../assets/shared/Button";
+import { ThreeDots } from "react-loader-spinner";
 
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Order() {
   const { id } = useParams();
   const client = JSON.parse(localStorage.getItem("client"));
   const [product, setProduct] = useState({});
   const [amount, setAmount] = useState(1);
-  const [isProcessRequest, setIsProcessRequest] = useState(false)
+  const [isProcessRequest, setIsProcessRequest] = useState(false);
   const [isOrderFinished, setIsOrderFinished] = useState(false);
 
   const order = {
@@ -33,15 +33,19 @@ export default function Order() {
     },
   };
 
-  const notify = () => toast.success('Compra realizada com sucesso! Visualize seu pedido na aba "Meus pedidos".', {
-    position: "top-right",
-    autoClose: 7000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    });;
+  const notify = () =>
+    toast.success(
+      'Compra realizada com sucesso! Visualize seu pedido na aba "Meus pedidos".',
+      {
+        position: "top-right",
+        autoClose: 7000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      }
+    );
 
   useEffect(() => {
     async function fetchData() {
@@ -61,36 +65,35 @@ export default function Order() {
 
   async function handlerPurchase(e) {
     e.preventDefault();
-    setIsProcessRequest(true)
+    setIsProcessRequest(true);
     await registerPurchase(order, config);
-    
+
     setTimeout(() => {
-      setIsOrderFinished(true)
-      notify()
-    }, 2000)
+      setIsOrderFinished(true);
+      notify();
+    }, 2000);
   }
- 
 
   return (
     <>
       <Container>
         <LeftBar />
-        
+
         <MainContent>
-        <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        />
-       
-        <ToastContainer />
-                         
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+          />
+
+          <ToastContainer />
+
           {product.price ? (
             <div className="orderContainer">
               {!isOrderFinished ? (
@@ -107,7 +110,7 @@ export default function Order() {
                       <div className="addAmount">
                         <span>Quantidade: {amount}</span>
                         <ButtonDefault
-                        data-test-id="button-add"
+                          data-test-id="button-add"
                           onClick={() => addAmount("add")}
                           className="amount"
                         >
@@ -119,7 +122,6 @@ export default function Order() {
                         >
                           -
                         </ButtonDefault>
-                      
                       </div>
                       <h3>
                         Total:{" "}
@@ -135,24 +137,41 @@ export default function Order() {
                   <div className="adress">
                     <h2>Informações de entrega</h2>
                     <form onSubmit={handlerPurchase}>
-                      <input data-test-id="cep" type="text" placeholder={"CEP"} required />
-                      <input data-test-id="number" placeholder={"Número"}  required />
-                      <input data-test-id="complement" placeholder={"Complemento"} required />
-                      <input data-test-id="observation" placeholder={"Enviar observação (opcional)"} />
-                      <ButtonGreen
-                        type={"submit"}
-                      >
-                        {isProcessRequest?
-                        <ThreeDots 
-                            height="30" 
-                            width="80" 
+                      <input
+                        data-test-id="cep"
+                        type="text"
+                        placeholder={"CEP"}
+                        required
+                      />
+                      <input
+                        data-test-id="number"
+                        placeholder={"Número"}
+                        required
+                      />
+                      <input
+                        data-test-id="complement"
+                        placeholder={"Complemento"}
+                        required
+                      />
+                      <input
+                        data-test-id="observation"
+                        placeholder={"Enviar observação (opcional)"}
+                      />
+                      <ButtonGreen type={"submit"}>
+                        {isProcessRequest ? (
+                          <ThreeDots
+                            height="30"
+                            width="80"
                             radius="9"
-                            color="white" 
+                            color="white"
                             ariaLabel="three-dots-loading"
                             wrapperStyle={{}}
                             wrapperClassName=""
                             visible={true}
-                        />: "Finalizar compra"}
+                          />
+                        ) : (
+                          "Finalizar compra"
+                        )}
                       </ButtonGreen>
                     </form>
                   </div>
@@ -161,13 +180,19 @@ export default function Order() {
                 <div className="thanks">
                   <h2>Agradecemos pela compra. Volte sempre! =)</h2>
                   <Link to="/home">
-                    <ButtonDefault content={"Voltar para a home"}> Voltar para a home </ButtonDefault>
+                    <ButtonDefault content={"Voltar para a home"}>
+                      {" "}
+                      Voltar para a home{" "}
+                    </ButtonDefault>
                   </Link>
                   <Link to="/orders">
-                    <ButtonDefault content={"Visualizar meus pedidos"} >  Visualizar meus pedidos</ButtonDefault>
+                    <ButtonDefault content={"Visualizar meus pedidos"}>
+                      {" "}
+                      Visualizar meus pedidos
+                    </ButtonDefault>
                   </Link>
                   <Link to="/cart">
-                    <ButtonDefault >Visualizar meu carrinho</ButtonDefault> 
+                    <ButtonDefault>Visualizar meu carrinho</ButtonDefault>
                   </Link>
                 </div>
               )}
@@ -176,17 +201,15 @@ export default function Order() {
             "Carregando..."
           )}
         </MainContent>
-      
       </Container>
-     
     </>
   );
 }
 
 const Container = styled.div`
   display: flex;
-  
-  @media (max-width: 768px){
+
+  @media (max-width: 768px) {
     flex-direction: column;
     width: 100vw;
   }
@@ -212,11 +235,11 @@ const MainContent = styled.div`
     box-shadow: 2px 2px 4px 2px brown;
     font-family: "Roboto";
 
-    h2{
-      margin-bottom:10px;
+    h2 {
+      margin-bottom: 10px;
     }
 
-    @media (max-width:768px){
+    @media (max-width: 768px) {
       height: 100%;
       width: 100%;
       box-shadow: none;
@@ -243,8 +266,6 @@ const MainContent = styled.div`
     .orderInfos {
       border-right: 2px solid lightgray;
       padding-right: 10px;
-
-     
     }
 
     .productInfos {
@@ -283,67 +304,64 @@ const MainContent = styled.div`
       }
     }
   }
-  
-  button{
-      width: 100%;
 
-      @media (max-width:768px){
+  button {
+    width: 100%;
+
+    @media (max-width: 768px) {
       width: 80%;
     }
   }
 
-  form{
+  form {
     display: flex;
     flex-direction: column;
-    gap:10px;
+    gap: 10px;
 
-    @media (max-width:768px){
-     
+    @media (max-width: 768px) {
     }
   }
 
-  input{
+  input {
     width: 100%;
-    height:30px;
-    border:none;
+    height: 30px;
+    border: none;
     border-radius: 5px;
     background-color: red;
-    color:white;
-    outline:none;
-    padding:10px;
+    color: white;
+    outline: none;
+    padding: 10px;
 
-    ::placeholder{
-      color:white;
+    ::placeholder {
+      color: white;
     }
 
-    @media (max-width:768px){
+    @media (max-width: 768px) {
       width: 80%;
     }
-
   }
 
-
   .thanks {
-    width:100%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-  
-    gap:15px;
 
-    a{
+    gap: 15px;
+
+    a {
       text-decoration: none;
       width: 60%;
     }
 
-    button{
+    button {
       width: 100%;
 
-      @media (max-width:768px){
-     font-size: 1.2em;
-     height: 2em;
-    }
+      @media (max-width: 768px) {
+        font-size: 1.2em;
+        height: 2em;
+      }
     }
   }
 `;
