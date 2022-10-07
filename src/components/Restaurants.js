@@ -220,6 +220,7 @@ const Container = styled.div`
  
   .restaurants {
     display: flex;
+    justify-content: center;
     width: 100%;
     overflow-y: scroll;
     flex-wrap: wrap;
@@ -340,6 +341,7 @@ const Container = styled.div`
       align-items: center;
       gap:10px;
       width: 100%;
+      margin-top:10px;
     }
   }
 
@@ -348,7 +350,7 @@ const Container = styled.div`
     margin-top: 10px;
 
     @media (max-width:768px){
-      font-size:25px;
+      font-size:0.8em;
       height: 40px;
     }
   }

@@ -193,7 +193,7 @@ const Body = styled.div`
         justify-content: center;
         img{
           width: 50%;
-          height: 60px;
+          height: 30%;
         }
       }
 

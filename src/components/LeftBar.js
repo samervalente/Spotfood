@@ -22,7 +22,9 @@ export default function LeftBar() {
     <>
       
       <HamburguerContainer>
-      <img className="logo" src={logo} alt="logo" />
+      <Link to="/home">
+       <img className="logo" src={logo} alt="logo" />
+      </Link>
         <Hamburger direction="right" className="hamburguer" toggled={isOpen} toggle={setOpen} />
       </HamburguerContainer>
       <LeftBarComponent isOpen={isOpen}>
@@ -72,6 +74,7 @@ export default function LeftBar() {
 }
 
 const HamburguerContainer = styled.div`
+
   display:none;
   @media (max-width: 768px){
       display: flex;
@@ -81,9 +84,16 @@ const HamburguerContainer = styled.div`
       height: 100px;
       padding:15px;
 
-      img{
-        height: 100%;
-        width: 40%;
+      a{
+        
+        height: 90%;
+        width: 80%;
+
+        img{
+          height: 90%;
+          width: 40%;
+        }
+      
       }
  
     }
@@ -205,8 +215,8 @@ const LeftBarComponent = styled.div`
       .overlap{
     height: 100vh;
     width: 40%;
-    background-color: red ;
-    opacity: 0.5;
+    background-color: red;
+    opacity: 0.8;
     overflow-y: none;
   }
   .home,
@@ -221,5 +231,5 @@ const LeftBarComponent = styled.div`
  
     }
 
-  
+ 
 `;

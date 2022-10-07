@@ -173,7 +173,8 @@ export default function Restaurant() {
   return (
     <>
       <Container>
-        <LeftBar />
+   
+            <LeftBar />
         <MainContent>
           <div className="topInfos">
             <img src={restaurantInfos.imageProfile} />
@@ -194,8 +195,10 @@ export default function Restaurant() {
               </div>
             </div>
           </div>
+          
           <div className="products">{renderProducts()}</div>
         </MainContent>
+       
       </Container>
     </>
   );
@@ -222,22 +225,27 @@ const customStyles = {
 };
 
 const Container = styled.div`
-  margin-left: 280px;
+  display: flex;
+
+  @media (max-width: 768px){
+    flex-direction: column;
+  }
+ 
 `;
 
 const MainContent = styled.div`
   font-family: "Roboto";
+  width: 100%;
 
-  .topInfos {
+
+  .topInfos { 
     background: hsla(0, 88%, 54%, 1);
-
     background: linear-gradient(
       270deg,
       hsla(0, 88%, 54%, 1) 13%,
       hsla(0, 94%, 47%, 1) 47%,
       hsla(0, 100%, 24%, 1) 100%
     );
-
     background: -moz-linear-gradient(
       270deg,
       hsla(0, 88%, 54%, 1) 13%,
@@ -257,7 +265,7 @@ const MainContent = styled.div`
     color: white;
     padding: 30px 60px;
 
-    height: 300px;
+    height: 150px;
     display: flex;
     align-items: center;
 
@@ -289,50 +297,81 @@ const MainContent = styled.div`
       }
     }
     img {
-      height: 200px;
-      width: 200px;
-      box-shadow: 2px 3px 20px 5px black;
+      height: 180px;
+      width: 180px;
+    
+      border-radius: 0px 0px 15px 15px;
+    }
+
+    @media(max-width:768px){
+      height:170px;
+      background-image: url("https://st2.depositphotos.com/1891407/10272/v/950/depositphotos_102723300-stock-illustration-cooking-kitchen-food-background.jpg");
+      background-size: cover;
+   
+
+      img{
+        display:none;
+      }
     }
   }
+
+  
+
   .products {
     width: 100%;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: center;
-
+    justify-content: flex-start;
+    gap:30px;
+    height: calc(100vh - 150px);
+    
     .categorieContainer {
       height: 500px;
-      box-shadow: 2px 1px 2px 2px gray;
-      border: 2px solid white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       padding-left: 20px;
       padding-top: 20px;
       margin-top: 20px;
-      width: 90%;
+      
       border-radius: 10px;
-
+    
+      overflow-x: scroll;
+        padding:20px;
+          ::-webkit-scrollbar {
+          display: none;
+        }
       .categoryName {
-        font-size: 35px;
+        font-size: 20px;
+        font-weight: bold;
         margin-bottom: 10px;
+        
       }
 
       .productsContainer {
         display: flex;
+        flex-direction: column;
         gap: 20px;
+        height: 100%;
+        overflow-y: scroll;
+        padding:20px;
+          ::-webkit-scrollbar {
+          display: none;
+        }
+        
 
         .productInfos {
           display: flex;
           flex-direction: column;
           gap: 10px;
-          padding:10px;
+          padding: 10px;
           align-items: center;
-          border-radius: 2px;
+          border-radius: 5px;
           height: 300px;
           width: 230px;
-          box-shadow: 2px 2px 2px 3px lightgray;
+          box-shadow: 3px 3px 3px 3px gray;
 
           .price {
-            margin-top: 10px;
             color: red;
             font-weight: bold;
           }
@@ -372,17 +411,24 @@ const MainContent = styled.div`
         border-radius: 5px;
       }
     }
+
+    @media(max-width:768px){
+      padding:20px;
+    }
   }
 
   .noProductsContainer {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
+    width: 100%;
     gap: 10px;
     height: calc(100vh - 300px);
 
     a {
-      width: 100%;
+      text-decoration: none;
+      width: 30%;
     }
 
     button {
@@ -401,5 +447,17 @@ const MainContent = styled.div`
         color: red;
       }
     }
+
+    @media(max-width:768px){
+      align-items: center;
+
+      a{
+        width: 60%;
+      }
+
+   
+    }
   }
+
+
 `;
