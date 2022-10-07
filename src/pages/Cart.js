@@ -63,13 +63,13 @@ export default function Cart() {
     } else {
       return (
         <>
-         <div className="emptyCart">
-         <p>Carrinho vazio :(</p>
-          <p> Que tal adicionar alguns produtos?</p>
-          <Link to="/home">
-            <ButtonDefault>Ver restaurantes</ButtonDefault>
-          </Link>
-         </div>
+          <div className="emptyCart">
+            <p>Carrinho vazio :(</p>
+            <p> Que tal adicionar alguns produtos?</p>
+            <Link to="/home">
+              <ButtonDefault>Ver restaurantes</ButtonDefault>
+            </Link>
+          </div>
         </>
       );
     }
@@ -77,47 +77,48 @@ export default function Cart() {
 
   return (
     <>
-     <MainSection>
-     <LeftBar />
-      <Container>
-        <div className="user">
-          <h1>
-            Olá, <strong>{client.name.split(" ")[0]}</strong>! Visualize seu
-            carrinho logo abaixo:
-          </h1>
-        </div>
-        <div className="cartContainer">{renderCart()}</div>
-        <div className="cartActions">
-          <Link to={`/orders/${cartInfos.cartId}`}>
-            {cartProducts && cartProducts.length > 0 ?   <ButtonDefault
-              onClick={() => finishOrder()}
-            
-            >Finalizar Compra</ButtonDefault>:   
-            <ButtonDefault
-            disabled
-            className="finishDisable"
-          >Finalizar Compra</ButtonDefault>}
-          </Link>
+      <MainSection>
+        <LeftBar />
+        <Container>
+          <div className="user">
+            <h1>
+              Olá, <strong>{client.name.split(" ")[0]}</strong>! Visualize seu
+              carrinho logo abaixo:
+            </h1>
+          </div>
+          <div className="cartContainer">{renderCart()}</div>
+          <div className="cartActions">
+            <Link to={`/orders/${cartInfos.cartId}`}>
+              {cartProducts && cartProducts.length > 0 ? (
+                <ButtonDefault onClick={() => finishOrder()}>
+                  Finalizar Compra
+                </ButtonDefault>
+              ) : (
+                <ButtonDefault disabled className="finishDisable">
+                  Finalizar Compra
+                </ButtonDefault>
+              )}
+            </Link>
 
-          {cartInfos.totalPrice ? (
-            <span>Total: R${cartInfos.totalPrice.toFixed(2)}</span>
-          ) : (
-            <span>Total: R$ 00,00</span>
-          )}
-        </div>
-      </Container>
-     </MainSection>
+            {cartInfos.totalPrice ? (
+              <span>Total: R${cartInfos.totalPrice.toFixed(2)}</span>
+            ) : (
+              <span>Total: R$ 00,00</span>
+            )}
+          </div>
+        </Container>
+      </MainSection>
     </>
   );
 }
 
 const MainSection = styled.div`
-display: flex;
+  display: flex;
 
-@media (max-width:768px){
-  flex-direction: column;
-}
-`
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+`;
 
 const Container = styled.div`
   background-color: red;
@@ -133,7 +134,7 @@ const Container = styled.div`
   gap: 10px;
 
   .user {
-    padding:10px;
+    padding: 10px;
     text-align: center;
     h1 {
       font-size: 1.5em;
@@ -182,39 +183,37 @@ const Container = styled.div`
       }
     }
 
-    @media (max-width:768px){
-
-      .cartInfos{
+    @media (max-width: 768px) {
+      .cartInfos {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        gap:10px;
+        gap: 10px;
         height: 300px;
-        
 
-        button{
+        button {
           width: 50%;
         }
       }
     }
   }
 
-  a{
+  a {
     text-decoration: none;
   }
 
-  .finishDisable{
+  .finishDisable {
     background-color: gray;
   }
 
-  .emptyCart{
+  .emptyCart {
     height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap:10px;
-    button{
+    gap: 10px;
+    button {
       width: 100%;
     }
   }
@@ -230,18 +229,16 @@ const Container = styled.div`
     justify-content: space-between;
     padding: 10px 65px;
 
-    @media (max-width:768px){
-      gap:10px;
+    @media (max-width: 768px) {
+      gap: 10px;
       width: 80%;
-     
-      a{
+
+      a {
         width: 100%;
-        button{
+        button {
           width: 100%;
         }
       }
-
-       
-      }
+    }
   }
 `;

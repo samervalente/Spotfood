@@ -88,14 +88,20 @@ export default function Orders() {
 }
 
 const Container = styled.div`
-  margin-left: 280px;
+
   font-family: "Roboto";
+  display: flex;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    width: 100vw;
+  }
 `;
 
 const MainContent = styled.div`
   background-color: red;
   height: 100vh;
-
+  width: 100vw;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -117,6 +123,14 @@ const MainContent = styled.div`
     height: 500px;
     padding: 10px;
     gap: 15px;
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        gap:10px;
+        width: 100vw;
+        padding:0px;
+        border-radius: 0px;
+  }
   }
 
   .orderContainer {
@@ -125,6 +139,13 @@ const MainContent = styled.div`
     box-shadow: 2px 2px 3px 2px gray;
     border-radius: 10px;
     padding: 10px;
+
+    @media (max-width: 768px) {
+      width: 100%;
+      border-radius: 0px;
+      box-shadow: none;
+      border-bottom: 2px solid gray;
+  }
 
     .productsContainer {
       display: flex;
@@ -136,8 +157,8 @@ const MainContent = styled.div`
       .product {
         box-shadow: 2px 2px 2px 2px gray;
         border-radius: 5px;
+        width: 200px;
         padding: 10px;
-
         height: 200px;
         display: flex;
         flex-direction: column;
@@ -163,6 +184,12 @@ const MainContent = styled.div`
       display: flex;
       justify-content: space-between;
       font-size: 14px;
+
+      @media (max-width: 768px) {
+        flex-direction: column;
+        gap:10px;
+        width: 100vw;
+  }
 
       .orderCode {
         color: gray;

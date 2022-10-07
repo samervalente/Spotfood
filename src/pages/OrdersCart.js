@@ -4,15 +4,18 @@ import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getClientCart } from "../api/clientAPI";
 import { removeProductsFromCart, registerPurchase } from "../api/productsAPI";
-import { ButtonDefault } from "../assets/shared/Button";
+import { ButtonDefault, ButtonGreen } from "../assets/shared/Button";
 import Input from "../assets/shared/Input";
+import { ToastContainer, toast } from "react-toastify";
+import { ThreeDots } from "react-loader-spinner";
 
 export default function Order() {
-  const { cartId } = useParams();
+
   const client = JSON.parse(localStorage.getItem("client"));
   const [cartInfos, setCartInfos] = useState({});
   const [cartProducts, setCartProducts] = useState([]);
   const [isOrderFinished, setIsOrderFinished] = useState(false);
+  const [isProcessRequest, setIsProcessRequest] = useState(false);
   const [fetchDependency, setFechDependency] = useState(false);
 
   const config = {
@@ -20,6 +23,20 @@ export default function Order() {
       authorization: `Bearer ${client.token}`,
     },
   };
+
+  const notify = () =>
+    toast.success(
+      'Compra realizada com sucesso! Visualize seu pedido na aba "Meus pedidos".',
+      {
+        position: "top-right",
+        autoClose: 7000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      }
+    );
 
   useEffect(() => {
     async function fetchData() {
@@ -37,6 +54,7 @@ export default function Order() {
 
   async function handlerPurchase(e) {
     e.preventDefault();
+    setIsProcessRequest(true);
     const products = cartProducts.map((product) => ({
       productId: product.productId,
       amount: product.amount,
@@ -44,7 +62,10 @@ export default function Order() {
     const body = { products, totalValue: cartInfos.totalPrice };
     const { status } = await registerPurchase(body, config);
     if (status === 200) {
-      setIsOrderFinished(true);
+      setTimeout(() => {
+        setIsOrderFinished(true);
+        notify();
+      }, 2000);
     }
   }
 
@@ -53,6 +74,17 @@ export default function Order() {
       <Container>
         <LeftBar />
         <MainContent>
+           <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+          />
           {cartProducts && cartProducts.length > 0 ? (
             <div className="orderContainer">
               {!isOrderFinished ? (
@@ -65,15 +97,17 @@ export default function Order() {
                           <div className="productInfos">
                             <img src={product.imageUrl} />
                             <p>Produto: {product.name} </p>
+                            <p>Quantidade: {product.amount}</p>
                             <p className="price">
-                              Preço unitário: R$ {product.price}
+                              Preço unitário: R$ {(product.price).toFixed(2).replace(".",",")}
                             </p>
+                            <p>Subtotal: R$ {(product.amount*product.price).toFixed(2).replace(".",",")}</p>
                             <ButtonDefault
                               onClick={() =>
                                 removeProductFromCart(product.productId)
                               }
-                              content={"Remover"}
-                            />
+                              
+                            > Remover </ButtonDefault>
                           </div>
                         );
                       })}
@@ -91,11 +125,22 @@ export default function Order() {
                       <Input placeholder={"Número"} required />
                       <Input placeholder={"Complemento"} required />
                       <Input placeholder={"Enviar observação (opcional)"} />
-                      <ButtonDefault
-                        type={"submit"}
-                        width={"50%"}
-                        content={"Finalizar compra"}
-                      />
+                      <ButtonGreen type={"submit"}>
+                        {isProcessRequest ? (
+                          <ThreeDots
+                            height="30"
+                            width="80"
+                            radius="9"
+                            color="white"
+                            ariaLabel="three-dots-loading"
+                            wrapperStyle={{}}
+                            wrapperClassName=""
+                            visible={true}
+                          />
+                        ) : (
+                          "Finalizar compra"
+                        )}
+                      </ButtonGreen>
                     </form>
                   </div>
                 </>
@@ -103,13 +148,13 @@ export default function Order() {
                 <div className="thanks">
                   <h2>Agradecemos pela compra. Volte sempre! =)</h2>
                   <Link to="/home">
-                    <ButtonDefault content={"Voltar para a home"} />
+                    <ButtonDefault content={"Voltar para a home"}>Voltar para a home</ButtonDefault>
                   </Link>
                   <Link to="/orders">
-                    <ButtonDefault content={"Visualizar meus pedidos"} />
+                    <ButtonDefault content={"Visualizar meus pedidos"} >Visualizar meus pedidos</ButtonDefault>
                   </Link>
                   <Link to="/cart">
-                    <ButtonDefault content={"Visualizar meu carrinho"} />
+                    <ButtonDefault content={"Visualizar meu carrinho"} >Visualizar meu carrinho</ButtonDefault>
                   </Link>
                 </div>
               )}
@@ -125,10 +170,14 @@ export default function Order() {
 
 const Container = styled.div`
   display: flex;
+
+
+  @media (max-width:768px){
+     flex-direction: column;
+      }
 `;
 
 const MainContent = styled.div`
-  margin-left: 280px;
   background-color: red;
   width: 100%;
   height: 100vh;
@@ -197,6 +246,8 @@ const MainContent = styled.div`
           }
         }
       }
+
+      
     }
 
     .addAmount {
@@ -216,19 +267,45 @@ const MainContent = styled.div`
         width: 25px;
       }
     }
+
+    @media (max-width:768px){
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+      border-radius: 0px;
+      box-shadow: none;
+
+      .adress{
+        width: 100%;
+      }
+
+      input{
+        width: 80%;
+      }
+      }
   }
 
   .adress {
     width: 50%;
+   
     button {
       background-color: green;
     }
   }
 
   .thanks {
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap:15px;
+
+   
+
+  }
+
+  a{
+    text-decoration: none;
   }
 `;

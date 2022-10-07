@@ -103,6 +103,7 @@ export default function Order() {
                     <div className="productInfos">
                       <img src={product.imageUrl} />
                       <p>Produto: {product.name}</p>
+                  
                       <p className="price">
                         Preço unitário: R${" "}
                         {product.price.toFixed(2).replace(".", ",")}
