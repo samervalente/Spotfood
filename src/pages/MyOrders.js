@@ -74,10 +74,10 @@ export default function Orders() {
             {orders.length > 0 ? (
               <>{renderOrders()}</>
             ) : (
-              <div>
+              <div className="notOrderProducts">
                 {" "}
                 <h2>Nenhum pedido efetuado ainda :( Que tal </h2>{" "}
-                <ButtonDefault content={"Explorar restaurantes"} />{" "}
+                <ButtonDefault>Explorar os restaurantes </ButtonDefault>{" "}
               </div>
             )}
           </div>
@@ -164,6 +164,7 @@ const MainContent = styled.div`
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        gap:10px;
 
         p {
           width: 90%;
@@ -178,6 +179,13 @@ const MainContent = styled.div`
           height: 80px;
         }
       }
+    }
+
+    .feedback{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap:5px;
     }
 
     .orderInfosContainer {
@@ -199,6 +207,18 @@ const MainContent = styled.div`
         color: red;
         font-weight: bold;
       }
+    }
+  }
+
+  .notOrderProducts{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap:10px;
+
+    @media (max-width:768px){
+      flex-direction: column;
     }
   }
 `;

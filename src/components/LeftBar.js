@@ -59,7 +59,7 @@ export default function LeftBar() {
         <div className="userInfos">
           <div className="userProfile">
             <img className="userImgProfile" src={client.imageProfile} />
-            <span>{client.name}</span>
+            <span>{client.name.split(" ")[0]}</span>
           </div>
           <div className="div"></div>
           <span className="logout" onClick={() => logout()}>Logout <RiLogoutCircleRFill className="icon logout" /> </span>
