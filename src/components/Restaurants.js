@@ -174,7 +174,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
-  padding:20px;
+  padding: 20px;
   gap: 50px;
   width: 100vw;
   font-family: "Roboto";
@@ -187,28 +187,29 @@ const Container = styled.div`
     width: 100%;
 
     .title {
-    font-size: 25px;
-  } 
+      font-size: 25px;
+    }
 
-  .found {
-    font-size: 20px;
-    color: red;
-    font-weight: bold;
-  }
+    .found {
+      font-size: 20px;
+      color: red;
+      font-weight: bold;
+    }
 
-  .filter {
-    display: flex;
-    justify-content: center; 
-  }
+    .filter {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-    @media(max-width: 768px){
-      .filter{
+    @media (max-width: 768px) {
+      .filter {
         justify-content: flex-start;
         flex-direction: column;
-        gap:10px;
+        align-items: flex-start;
+        gap: 10px;
       }
     }
-    
   }
 
   .locationFilter {
@@ -217,7 +218,6 @@ const Container = styled.div`
     margin-right: 10px;
   }
 
- 
   .restaurants {
     display: flex;
     justify-content: center;
@@ -225,10 +225,7 @@ const Container = styled.div`
     overflow-y: scroll;
     flex-wrap: wrap;
     gap: 40px;
-
-    
   }
-
 
   .restaurantContainer {
     display: flex;
@@ -331,17 +328,17 @@ const Container = styled.div`
     }
   }
 
+  .notFound {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
-  .notFound{
-    @media (max-width:768px){
-      font-size:25px;
+    @media (max-width: 768px) {
+      font-size: 25px;
       text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap:10px;
+      gap: 10px;
       width: 100%;
-      margin-top:10px;
+      margin-top: 10px;
     }
   }
 
@@ -349,8 +346,8 @@ const Container = styled.div`
     width: 50%;
     margin-top: 10px;
 
-    @media (max-width:768px){
-      font-size:0.8em;
+    @media (max-width: 768px) {
+      font-size: 0.8em;
       height: 40px;
     }
   }

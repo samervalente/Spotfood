@@ -50,10 +50,12 @@ export default function LeftBar() {
               <h2>Meus pedidos</h2>
             </Link>
           </div>
-          <div className="favo">
+          {/* <div className="favo">
             <BsQuestionCircle className="icon" />
-            <h2>O que vou comer hoje?</h2>
-          </div>
+            <Link to="/what-eat">
+              <h2>O que vou comer hoje?</h2>
+            </Link>
+          </div> */}
         </div>
         </div>
         <div className="userInfos">
