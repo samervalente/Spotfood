@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseURL = "http://localhost:5000";
+const baseURL = "https://spotfood.herokuapp.com";
 
 export async function getAllRestaurants(config) {
   try {
@@ -19,7 +19,7 @@ export async function getRestaurantById(restaurantId, config) {
 
     return data;
   } catch (error) {
-    console.log(error);
+  
     alert("Não foi possível pegar os dados do restaurante.");
   }
 }

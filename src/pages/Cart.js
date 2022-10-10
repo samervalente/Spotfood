@@ -30,9 +30,6 @@ export default function Cart() {
     setFechDependency(!fetchDependency);
   }
 
-  async function finishOrder() {
-    console.log(cartInfos);
-  }
 
   function renderCart() {
     if (cartProducts && cartProducts.length > 0) {
@@ -90,7 +87,7 @@ export default function Cart() {
           <div className="cartActions">
             <Link to={`/orders/${cartInfos.cartId}`}>
               {cartProducts && cartProducts.length > 0 ? (
-                <ButtonDefault onClick={() => finishOrder()}>
+                <ButtonDefault>
                   Finalizar Compra
                 </ButtonDefault>
               ) : (

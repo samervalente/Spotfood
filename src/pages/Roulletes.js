@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
 import LeftBar from "../components/LeftBar";
-import Roullete from "../components/Roullete";
+
 
 export default function Roulletes() {
   const [mustSpin, setMustSpin] = useState(false);

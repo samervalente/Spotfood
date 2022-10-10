@@ -60,7 +60,7 @@ export default function Restaurants() {
 
   async function filterRestaurant() {
     location.state = location.state.trim();
-    console.log(location);
+
     const response = await filterRestaurants(
       location.state,
       location.city,
@@ -71,7 +71,7 @@ export default function Restaurants() {
   }
 
   function renderRestaurants() {
-    return restaurants.length > 0 ? (
+    return restaurants && restaurants.length > 0 ? (
       restaurants.map((restaurant) => {
         return (
           <div
