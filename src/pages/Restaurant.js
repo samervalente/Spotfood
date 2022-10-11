@@ -86,11 +86,11 @@ export default function Restaurant() {
                 return (
                   <div className="productInfos">
                     <img src={product.imageUrl} />
-                    <p>{product.productName}</p>
+                    <p className="productName">{product.productName}</p>
                     <span className="price">
                       R$ {product.price.toFixed(2).replace(".", ",")}
                     </span>
-                    <span>{product.description}</span>
+                    <span className="productDescription">{product.description}</span>
                     <ButtonDefault
                       width={"90%"}
                       onClick={() => purchase(product.productId)}
@@ -263,6 +263,7 @@ const MainContent = styled.div`
     filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#F12323", endColorstr="#E90707", GradientType=1 );
 
     color: white;
+    width:100vw;
     padding: 30px 60px;
 
     height: 150px;
@@ -295,6 +296,17 @@ const MainContent = styled.div`
         font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
         font-size: 50px;
       }
+
+      @media(max-width:768px){
+        h2{
+          
+          font-size:30px;
+        }
+
+        .name, .location{
+          gap:5px;
+        }
+    }
     }
     img {
       height: 180px;
@@ -308,6 +320,7 @@ const MainContent = styled.div`
       background-image: url("https://st2.depositphotos.com/1891407/10272/v/950/depositphotos_102723300-stock-illustration-cooking-kitchen-food-background.jpg");
       background-size: cover;
    
+      
 
       img{
         display:none;
@@ -318,15 +331,24 @@ const MainContent = styled.div`
   
 
   .products {
-    width: 100%;
+    width:100vw;
     display: flex;
     align-items: center;
     justify-content: flex-start;
     gap:30px;
     height: calc(100vh - 150px);
+ 
+    
+    @media (max-width: 768px){
+      gap:0px;
+      flex-direction: column;
+      align-items: center;
+      height: 100%;
+    }
     
     .categorieContainer {
       height: 500px;
+     
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -370,6 +392,14 @@ const MainContent = styled.div`
           height: 300px;
           width: 230px;
           box-shadow: 3px 3px 3px 3px gray;
+
+          .productName, .productDescription{
+            text-align: center;
+          }
+
+          .productDescription{
+            color:gray;
+          }
 
           .price {
             color: red;

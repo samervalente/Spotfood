@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import LeftBar from "../components/LeftBar";
 import { getClientOrders } from "../api/clientAPI";
 import { useEffect, useState } from "react";
@@ -77,7 +78,9 @@ export default function Orders() {
               <div className="notOrderProducts">
                 {" "}
                 <h2>Nenhum pedido efetuado ainda :( Que tal </h2>{" "}
-                <ButtonDefault>Explorar os restaurantes </ButtonDefault>{" "}
+                <Link to="/home">
+                  <ButtonDefault>Explorar os restaurantes </ButtonDefault>{" "}
+                </Link>
               </div>
             )}
           </div>
@@ -220,5 +223,9 @@ const MainContent = styled.div`
     @media (max-width:768px){
       flex-direction: column;
     }
+  }
+
+  a{
+    text-decoration: none;
   }
 `;

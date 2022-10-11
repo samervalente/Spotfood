@@ -50,12 +50,12 @@ export default function LeftBar() {
               <h2>Meus pedidos</h2>
             </Link>
           </div>
-          {/* <div className="favo">
+          <div className="favo">
             <BsQuestionCircle className="icon" />
             <Link to="/what-eat">
               <h2>O que vou comer hoje?</h2>
             </Link>
-          </div> */}
+          </div>
         </div>
         </div>
         <div className="userInfos">
@@ -92,7 +92,7 @@ const HamburguerContainer = styled.div`
         width: 80%;
 
         img{
-          height: 90%;
+          height: 80%;
           width: 40%;
         }
       
@@ -105,7 +105,7 @@ const HamburguerContainer = styled.div`
 const LeftBarComponent = styled.div`
   height: 100vh;
   display: flex;
-
+    z-index: 1;
   .optionsBar{
     background: white;
     width: 280px;

@@ -220,6 +220,7 @@ const Container = styled.div`
 
   .restaurants {
     display: flex;
+    padding:10px;
     justify-content: center;
     width: 100%;
     overflow-y: scroll;

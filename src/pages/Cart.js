@@ -30,7 +30,6 @@ export default function Cart() {
     setFechDependency(!fetchDependency);
   }
 
-
   function renderCart() {
     if (cartProducts && cartProducts.length > 0) {
       return cartProducts.map((product) => {
@@ -87,9 +86,7 @@ export default function Cart() {
           <div className="cartActions">
             <Link to={`/orders/${cartInfos.cartId}`}>
               {cartProducts && cartProducts.length > 0 ? (
-                <ButtonDefault>
-                  Finalizar Compra
-                </ButtonDefault>
+                <ButtonDefault>Finalizar Compra</ButtonDefault>
               ) : (
                 <ButtonDefault disabled className="finishDisable">
                   Finalizar Compra
@@ -98,7 +95,7 @@ export default function Cart() {
             </Link>
 
             {cartInfos.totalPrice ? (
-              <span>Total: R${cartInfos.totalPrice.toFixed(2)}</span>
+              <span>Total: R${cartInfos.totalPrice.toFixed(2).replace(".",",")}</span>
             ) : (
               <span>Total: R$ 00,00</span>
             )}
@@ -166,7 +163,7 @@ const Container = styled.div`
 
         img {
           height: 80px;
-          width: 120px;
+          width: 90px;
         }
         .productName {
         }
