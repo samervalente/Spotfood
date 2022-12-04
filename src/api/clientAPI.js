@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseURL = "https://spotfood.herokuapp.com";
+const baseURL = process.env.API_CONNECT_BASE_URL;
 
 export async function registerClient(clientData) {
   try {
