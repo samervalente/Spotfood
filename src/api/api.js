@@ -1,10 +1,9 @@
 import axios from "axios";
 
-
-console.log(process.env.REACT_APP_API_BASE_URL)
+const baseURL = "spotfood-backend-production.up.railway.app";
 
 const instance = axios.create({
-  baseURL: process.env.REACT_APP_API_BASE_URL,
+  baseURL,
 });
 
 export default instance;
