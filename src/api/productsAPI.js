@@ -1,13 +1,8 @@
-import axios from "axios";
-
-const baseURL = process.env.API_CONNECT_BASE_URL;
+import api from "./api";
 
 export async function getProductById(productId, config) {
   try {
-    const { data } = await axios.get(
-      `${baseURL}/products/${productId}`,
-      config
-    );
+    const { data } = await api.get(`/products/${productId}`, config);
 
     return data;
   } catch (error) {
@@ -17,7 +12,7 @@ export async function getProductById(productId, config) {
 
 export async function addProductToCart(productId, amount, config) {
   try {
-    await axios.post(`${baseURL}/products/${productId}/cart`, amount, config);
+    await api.post(`/products/${productId}/cart`, amount, config);
   } catch (error) {
     alert(
       "Não foi possível adicionar este produto ao carrinho. Tente novamente"
@@ -27,10 +22,7 @@ export async function addProductToCart(productId, amount, config) {
 
 export async function removeProductsFromCart(productId, config) {
   try {
-    const response = await axios.delete(
-      `${baseURL}/products/${productId}/cart`,
-      config
-    );
+    await api.delete(`/products/${productId}/cart`, config);
   } catch (error) {
     alert("Não foi possível remover este produto do carrinho. Tente novamente");
   }
@@ -38,8 +30,8 @@ export async function removeProductsFromCart(productId, config) {
 
 export async function registerPurchase(products, config) {
   try {
-    const response = await axios.post(
-      `${baseURL}/products/purchase`,
+    const response = await api.post(
+      `/products/purchase`,
       products,
       config
     );

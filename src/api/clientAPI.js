@@ -1,9 +1,8 @@
-import axios from "axios";
-const baseURL = process.env.API_CONNECT_BASE_URL;
+import api from "./api";
 
 export async function registerClient(clientData) {
   try {
-    const response = await axios.post(`${baseURL}/clients`, clientData);
+    const response = await api.post(`/clients`, clientData);
 
     return response.status;
   } catch (error) {
@@ -17,7 +16,7 @@ export async function registerClient(clientData) {
 
 export async function loginClient(clientData) {
   try {
-    const response = await axios.post(`${baseURL}/clients/login`, clientData);
+    const response = await api.post(`/clients/login`, clientData);
 
     return response.data;
   } catch (error) {
@@ -31,7 +30,7 @@ export async function loginClient(clientData) {
 
 export async function getClientCart(config) {
   try {
-    const { data } = await axios.get(`${baseURL}/clients/carts`, config);
+    const { data } = await api.get(`/clients/carts`, config);
     return data;
   } catch (error) {
     alert("Não foi possível carregar o carrinho.");
@@ -40,7 +39,7 @@ export async function getClientCart(config) {
 
 export async function getClientOrders(config) {
   try {
-    const { data } = await axios.get(`${baseURL}/clients/orders`, config);
+    const { data } = await api.get(`/clients/orders`, config);
     return data;
   } catch (error) {
     alert("Não foi possível carregar os pedidos.");

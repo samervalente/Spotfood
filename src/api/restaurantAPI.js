@@ -1,10 +1,8 @@
-import axios from "axios";
-
-const baseURL = process.env.API_CONNECT_BASE_URL;
+import api from "./api";
 
 export async function getAllRestaurants(config) {
   try {
-    const { data } = await axios.get(`${baseURL}/restaurants`, config);
+    const { data } = await api.get(`/restaurants`, config);
     return data;
   } catch (error) {
     alert("error");
@@ -13,10 +11,7 @@ export async function getAllRestaurants(config) {
 
 export async function getRestaurantById(restaurantId, config) {
   try {
-    const { data } = await axios.get(
-      `${baseURL}/restaurants/${restaurantId}`,
-      config
-    );
+    const { data } = await api.get(`/restaurants/${restaurantId}`, config);
 
     return data;
   } catch (error) {
@@ -26,8 +21,8 @@ export async function getRestaurantById(restaurantId, config) {
 
 export async function getRestaurantProducts(restaurantId, config) {
   try {
-    const { data } = await axios.get(
-      `${baseURL}/restaurants/${restaurantId}/products`,
+    const { data } = await api.get(
+      `/restaurants/${restaurantId}/products`,
       config
     );
     return data;
@@ -38,8 +33,8 @@ export async function getRestaurantProducts(restaurantId, config) {
 
 export async function filterRestaurants(state, city, config) {
   try {
-    const { data } = await axios.get(
-      `${baseURL}/restaurants/filter?state=${state}&city=${city}`,
+    const { data } = await api.get(
+      `/restaurants/filter?state=${state}&city=${city}`,
       config
     );
 
